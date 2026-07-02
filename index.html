@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <title>Hemnath Milk Shop</title>
 <style>
   :root {
@@ -15,6 +16,8 @@
     --success: #16A34A;
     --success-light: #DCFCE7;
     --danger: #DC2626;
+    --warning: #F59E0B;
+    --warning-light: #FEF3C7;
     --text: #1E293B;
     --text-secondary: #64748B;
     --border: #E2E8F0;
@@ -23,251 +26,106 @@
     --shadow: 0 1px 3px rgba(0,0,0,0.08);
     --radius: 12px;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
+    background: var(--bg); color: var(--text);
+    min-height: 100dvh; display: flex; flex-direction: column; overflow-x: hidden;
   }
 
   /* ── Header ── */
   .header {
-    background: var(--primary);
-    color: white;
-    padding: 16px 20px 14px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    background: var(--primary); color: white;
+    padding: 16px 20px 14px; position: sticky; top: 0; z-index: 100;
   }
-  .header h1 {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+  .header h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
   .date-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 8px;
-    padding: 6px 12px;
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.15); border-radius: 8px; padding: 6px 12px;
   }
-  .date-bar label {
-    font-size: 13px;
-    opacity: 0.9;
-    white-space: nowrap;
-  }
+  .date-bar label { font-size: 13px; opacity: 0.9; white-space: nowrap; }
   .date-bar input[type="date"] {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: inherit;
-    outline: none;
-    min-width: 0;
+    flex: 1; background: transparent; border: none; color: white;
+    font-size: 15px; font-weight: 600; font-family: inherit; outline: none; min-width: 0;
   }
   .date-bar input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
   .today-btn {
-    background: rgba(255,255,255,0.25);
-    border: none;
-    color: white;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    white-space: nowrap;
+    background: rgba(255,255,255,0.25); border: none; color: white;
+    font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px; cursor: pointer; white-space: nowrap;
   }
 
   /* ── Content ── */
-  .content {
-    flex: 1;
-    padding: 12px 16px 100px;
-    max-width: 600px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
+  .content { flex: 1; padding: 12px 16px 100px; max-width: 600px; margin: 0 auto; width: 100%; }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
   /* ── Cards ── */
   .card {
-    background: var(--card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 16px;
-    margin-bottom: 12px;
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 16px; margin-bottom: 12px;
   }
   .card-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 12px;
+    font-size: 14px; font-weight: 700; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;
   }
 
   /* ── Purchase Grid ── */
   .supplier-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border);
   }
   .supplier-row:last-child { border-bottom: none; }
-  .supplier-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .supplier-input {
-    position: relative;
-  }
+  .supplier-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .supplier-input { position: relative; }
   .supplier-input label {
-    position: absolute;
-    top: -6px;
-    left: 8px;
-    font-size: 9px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-secondary);
-    background: var(--card);
-    padding: 0 4px;
-    z-index: 1;
+    position: absolute; top: -6px; left: 8px;
+    font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--text-secondary); background: var(--card); padding: 0 4px; z-index: 1;
   }
 
   /* ── Inputs ── */
-  input[type="number"],
-  input[type="text"],
-  select,
-  textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    font-size: 15px;
-    font-family: inherit;
-    background: var(--input-bg);
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.15s;
+  input[type="number"], input[type="text"], select, textarea {
+    width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 15px; font-family: inherit; background: var(--input-bg); color: var(--text);
+    outline: none; transition: border-color 0.15s;
   }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--primary);
-    background: white;
-  }
+  input:focus, select:focus, textarea:focus { border-color: var(--primary); background: white; }
   input[type="number"] {
-    -moz-appearance: textfield;
-    text-align: center;
-    font-weight: 600;
-    padding: 10px 6px;
+    -moz-appearance: textfield; text-align: center; font-weight: 600; padding: 10px 6px;
   }
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
-
   textarea { resize: vertical; min-height: 60px; }
+  .form-group { margin-bottom: 14px; }
+  .form-group > label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-  .form-group {
-    margin-bottom: 14px;
-  }
-  .form-group > label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: 6px;
-  }
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
+  /* ── Inputs with existing data ── */
+  input.has-data { border-color: var(--primary); background: var(--primary-light); }
 
   /* ── Buttons ── */
   .btn {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
+    width: 100%; padding: 14px; border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer;
     transition: transform 0.1s, opacity 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
   }
   .btn:active { transform: scale(0.98); }
-  .btn-primary {
-    background: var(--primary);
-    color: white;
-  }
-  .btn-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  .btn-success {
-    background: var(--success);
-    color: white;
-  }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
   /* ── Total Bar ── */
-  .total-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 0 4px;
-    margin-top: 4px;
-  }
-  .total-label {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-secondary);
-  }
-  .total-value {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--primary);
-  }
-  .total-unit {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-  }
+  .total-bar { display: flex; justify-content: space-between; align-items: center; padding: 14px 0 4px; margin-top: 4px; }
+  .total-label { font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+  .total-value { font-size: 22px; font-weight: 800; color: var(--primary); }
+  .total-unit { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
 
   /* ── Toast ── */
   .toast {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-100px);
-    padding: 12px 24px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    z-index: 1000;
-    transition: transform 0.3s ease;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    max-width: 90vw;
-    text-align: center;
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+    padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; z-index: 1000;
+    transition: transform 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    max-width: 90vw; text-align: center;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
   .toast.success { background: var(--success); color: white; }
@@ -276,162 +134,98 @@
 
   /* ── Bottom Nav ── */
   .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--tab-bg);
-    border-top: 1px solid var(--border);
-    display: flex;
-    z-index: 100;
+    position: fixed; bottom: 0; left: 0; right: 0; background: var(--tab-bg);
+    border-top: 1px solid var(--border); display: flex; z-index: 100;
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
   .nav-tab {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px 4px 10px;
-    border: none;
-    background: none;
-    color: var(--text-secondary);
-    font-size: 10px;
-    font-weight: 600;
-    font-family: inherit;
-    cursor: pointer;
-    gap: 3px;
-    transition: color 0.15s;
-    position: relative;
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    padding: 8px 4px 10px; border: none; background: none; color: var(--text-secondary);
+    font-size: 10px; font-weight: 600; font-family: inherit; cursor: pointer; gap: 3px;
+    transition: color 0.15s; position: relative;
   }
-  .nav-tab.active {
-    color: var(--primary);
-  }
+  .nav-tab.active { color: var(--primary); }
   .nav-tab.active::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 20%;
-    right: 20%;
-    height: 2.5px;
-    background: var(--primary);
-    border-radius: 0 0 2px 2px;
+    content: ''; position: absolute; top: 0; left: 20%; right: 20%;
+    height: 2.5px; background: var(--primary); border-radius: 0 0 2px 2px;
   }
   .nav-icon { font-size: 20px; }
 
-  /* ── Setup Banner ── */
-  .setup-banner {
-    background: #FEF3C7;
-    border: 1.5px solid #F59E0B;
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    margin-bottom: 12px;
-    font-size: 13px;
-    line-height: 1.5;
-    color: #92400E;
-  }
-  .setup-banner code {
-    background: rgba(0,0,0,0.08);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 12px;
-    word-break: break-all;
-  }
-
   /* ── Expense Category Chips ── */
-  .chip-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 4px;
-  }
+  .chip-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
   .chip {
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: 1.5px solid var(--border);
-    background: var(--input-bg);
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.15s;
+    padding: 8px 16px; border-radius: 20px; border: 1.5px solid var(--border);
+    background: var(--input-bg); font-size: 13px; font-weight: 600;
+    color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
   }
-  .chip.active {
-    border-color: var(--primary);
-    background: var(--primary-light);
-    color: var(--primary);
+  .chip.active { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
+
+  /* ── History List ── */
+  .history-list { margin-top: 12px; }
+  .history-card {
+    background: var(--card); border-radius: 10px; box-shadow: var(--shadow);
+    padding: 12px 14px; margin-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .history-left { display: flex; flex-direction: column; gap: 2px; }
+  .history-name { font-size: 14px; font-weight: 600; }
+  .history-detail { font-size: 12px; color: var(--text-secondary); }
+  .history-amount { font-size: 16px; font-weight: 700; color: var(--success); }
+  .history-litres { font-size: 16px; font-weight: 700; color: var(--primary); }
+  .history-empty {
+    text-align: center; padding: 20px; color: var(--text-secondary);
+    font-size: 13px; font-style: italic;
+  }
+  .history-header {
+    font-size: 12px; font-weight: 700; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin: 16px 0 8px; padding-top: 8px; border-top: 1px solid var(--border);
   }
 
-  /* ── History ── */
-  .history-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
+  /* ── Loading ── */
+  .loading-bar {
+    height: 3px; background: var(--primary-light); overflow: hidden;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: none;
   }
-  .history-item:last-child { border-bottom: none; }
-  .history-item .meta { color: var(--text-secondary); }
+  .loading-bar.active { display: block; }
+  .loading-bar::after {
+    content: ''; display: block; height: 100%; width: 30%;
+    background: var(--primary); animation: loadSlide 0.8s ease infinite;
+  }
+  @keyframes loadSlide { 0% { transform: translateX(-100%); } 100% { transform: translateX(400%); } }
+
+  /* ── Saved Badge ── */
+  .saved-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 600; color: var(--success);
+    background: var(--success-light); padding: 3px 10px; border-radius: 12px;
+  }
 
   /* ── Settings ── */
   .supplier-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--primary-light);
-    color: var(--primary);
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    margin: 4px;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--primary-light); color: var(--primary);
+    padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; margin: 4px;
   }
-  .supplier-tag .remove {
-    cursor: pointer;
-    font-size: 16px;
-    line-height: 1;
-    opacity: 0.6;
-  }
+  .supplier-tag .remove { cursor: pointer; font-size: 16px; line-height: 1; opacity: 0.6; }
   .supplier-tag .remove:hover { opacity: 1; }
-  .add-supplier-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-  }
+  .add-supplier-row { display: flex; gap: 8px; margin-top: 10px; }
   .add-supplier-row input { flex: 1; }
   .btn-sm {
-    padding: 10px 16px;
-    border: none;
-    border-radius: 8px;
-    background: var(--primary);
-    color: white;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    white-space: nowrap;
+    padding: 10px 16px; border: none; border-radius: 8px; background: var(--primary);
+    color: white; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap;
   }
-
-  /* ── Script URL input ── */
-  .url-input-group {
-    display: flex;
-    gap: 8px;
-    align-items: stretch;
-  }
+  .url-input-group { display: flex; gap: 8px; align-items: stretch; }
   .url-input-group input { flex: 1; font-size: 13px; }
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 6px;
-  }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
   .status-dot.connected { background: var(--success); }
   .status-dot.disconnected { background: var(--danger); }
 </style>
 </head>
 <body>
 
-<!-- Toast -->
+<div class="loading-bar" id="loadingBar"></div>
 <div class="toast" id="toast"></div>
 
 <!-- Header -->
@@ -439,7 +233,7 @@
   <h1>🥛 Hemnath Milk Shop</h1>
   <div class="date-bar">
     <label>Date</label>
-    <input type="date" id="entryDate">
+    <input type="date" id="entryDate" onchange="onDateChange()">
     <button class="today-btn" onclick="setToday()">Today</button>
   </div>
 </div>
@@ -450,7 +244,10 @@
   <!-- ════ PURCHASES TAB ════ -->
   <div class="tab-content active" id="tab-purchases">
     <div class="card">
-      <div class="card-title">Daily Milk Purchase (Litres)</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <div class="card-title" style="margin-bottom:0;">Daily Milk Purchase (Litres)</div>
+        <div id="purchaseSavedBadge"></div>
+      </div>
       <div class="supplier-row" style="padding-top:0; font-size:12px; font-weight:700; color:var(--text-secondary);">
         <div>Supplier</div>
         <div style="text-align:center">Morning</div>
@@ -470,7 +267,7 @@
   <!-- ════ UPI SALES TAB ════ -->
   <div class="tab-content" id="tab-upi">
     <div class="card">
-      <div class="card-title">UPI / PhonePe Sale</div>
+      <div class="card-title">New UPI / PhonePe Sale</div>
       <div class="form-group">
         <label>Customer Name</label>
         <input type="text" id="upiCustomer" placeholder="e.g. Ravi">
@@ -491,12 +288,14 @@
       </div>
     </div>
     <button class="btn btn-primary" onclick="saveUpiSale()">Save UPI Sale</button>
+    <div class="history-header" id="upiHistoryTitle">Today's UPI Sales</div>
+    <div id="upiHistory"></div>
   </div>
 
   <!-- ════ CASH SALES TAB ════ -->
   <div class="tab-content" id="tab-cash">
     <div class="card">
-      <div class="card-title">Cash Sale</div>
+      <div class="card-title">New Cash Sale</div>
       <div class="form-group">
         <label>Customer Name</label>
         <input type="text" id="cashCustomer" placeholder="e.g. Kumar">
@@ -517,6 +316,8 @@
       </div>
     </div>
     <button class="btn btn-primary" onclick="saveCashSale()">Save Cash Sale</button>
+    <div class="history-header" id="cashHistoryTitle">Today's Cash Sales</div>
+    <div id="cashHistory"></div>
   </div>
 
   <!-- ════ EXPENSES TAB ════ -->
@@ -549,15 +350,16 @@
       </div>
     </div>
     <button class="btn btn-primary" onclick="saveExpense()">Save Expense</button>
+    <div class="history-header" id="expenseHistoryTitle">Today's Expenses</div>
+    <div id="expenseHistory"></div>
   </div>
 
   <!-- ════ SETTINGS TAB ════ -->
   <div class="tab-content" id="tab-settings">
-    <!-- Connection -->
     <div class="card">
       <div class="card-title">Google Sheet Connection</div>
       <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px; line-height:1.5;">
-        Paste your deployed Apps Script URL here. See the <strong>SETUP.md</strong> file for instructions.
+        Paste your deployed Apps Script URL here.
       </p>
       <div class="url-input-group">
         <input type="text" id="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
@@ -568,8 +370,6 @@
         <span id="statusText">Not connected</span>
       </div>
     </div>
-
-    <!-- Suppliers -->
     <div class="card">
       <div class="card-title">Suppliers</div>
       <div id="supplierTags"></div>
@@ -578,26 +378,15 @@
         <button class="btn-sm" onclick="addSupplier()">Add</button>
       </div>
     </div>
-
-    <!-- Milk Rate -->
     <div class="card">
       <div class="card-title">Default Milk Rate (₹/Litre)</div>
-      <input type="number" id="milkRate" placeholder="e.g. 60" step="1" inputmode="decimal"
-             onchange="saveMilkRate()">
-      <p style="font-size:12px; color:var(--text-secondary); margin-top:6px;">
-        Used to auto-fill Amount in sales tabs.
-      </p>
+      <input type="number" id="milkRate" placeholder="e.g. 60" step="1" inputmode="decimal" onchange="saveMilkRate()">
+      <p style="font-size:12px; color:var(--text-secondary); margin-top:6px;">Used to auto-fill Amount in sales tabs.</p>
     </div>
-
-    <!-- Data -->
     <div class="card">
-      <div class="card-title">Local Data</div>
-      <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px; line-height:1.5;">
-        Unsaved entries are stored locally on this device.
-      </p>
-      <button class="btn btn-primary" onclick="testConnection()" style="margin-bottom:8px;">
-        Test Connection
-      </button>
+      <div class="card-title">Actions</div>
+      <button class="btn btn-primary" onclick="testConnection()" style="margin-bottom:8px;">Test Connection</button>
+      <button class="btn btn-primary" onclick="loadDateData()" style="background:var(--success);">↻ Reload Data for Selected Date</button>
     </div>
   </div>
 
@@ -606,40 +395,36 @@
 <!-- Bottom Navigation -->
 <div class="bottom-nav">
   <button class="nav-tab active" onclick="switchTab('purchases', this)">
-    <span class="nav-icon">🥛</span>
-    Purchase
+    <span class="nav-icon">🥛</span>Purchase
   </button>
   <button class="nav-tab" onclick="switchTab('upi', this)">
-    <span class="nav-icon">📱</span>
-    UPI Sale
+    <span class="nav-icon">📱</span>UPI Sale
   </button>
   <button class="nav-tab" onclick="switchTab('cash', this)">
-    <span class="nav-icon">💵</span>
-    Cash Sale
+    <span class="nav-icon">💵</span>Cash Sale
   </button>
   <button class="nav-tab" onclick="switchTab('expenses', this)">
-    <span class="nav-icon">📝</span>
-    Expense
+    <span class="nav-icon">📝</span>Expense
   </button>
   <button class="nav-tab" onclick="switchTab('settings', this)">
-    <span class="nav-icon">⚙️</span>
-    Settings
+    <span class="nav-icon">⚙️</span>Settings
   </button>
 </div>
 
 <script>
 // ── CONFIG ──
-const DEFAULT_SUPPLIERS = ['SPK', 'Subramani', 'Miniraj', 'Miy', 'Gobi', 'Venkatesh', 'Sudhakar', 'Avalapalli'];
-const LS_KEYS = {
+const DEFAULT_SUPPLIERS = ['SPK','Subramani','Miniraj','Miy','Gobi','Venkatesh','Sudhakar','Avalapalli'];
+const LS = {
   scriptUrl: 'hmilk_script_url',
   suppliers: 'hmilk_suppliers',
   milkRate: 'hmilk_rate',
 };
 
 // ── STATE ──
-let suppliers = JSON.parse(localStorage.getItem(LS_KEYS.suppliers)) || [...DEFAULT_SUPPLIERS];
-let scriptUrl = localStorage.getItem(LS_KEYS.scriptUrl) || '';
-let milkRate = parseFloat(localStorage.getItem(LS_KEYS.milkRate)) || 0;
+let suppliers = JSON.parse(localStorage.getItem(LS.suppliers)) || [...DEFAULT_SUPPLIERS];
+let scriptUrl = localStorage.getItem(LS.scriptUrl) || '';
+let milkRate = parseFloat(localStorage.getItem(LS.milkRate)) || 0;
+let cachedData = null; // holds fetched data for the current date
 
 // ── INIT ──
 function init() {
@@ -649,23 +434,31 @@ function init() {
   updateConnectionStatus();
   document.getElementById('scriptUrl').value = scriptUrl;
   document.getElementById('milkRate').value = milkRate || '';
-
-  // Auto-fill amount when litres change (UPI)
   document.getElementById('upiLitres').addEventListener('input', () => autoFillAmount('upi'));
   document.getElementById('cashLitres').addEventListener('input', () => autoFillAmount('cash'));
+  // Load data for today on startup
+  loadDateData();
 }
 
 function setToday() {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  document.getElementById('entryDate').value = `${yyyy}-${mm}-${dd}`;
+  const d = new Date();
+  document.getElementById('entryDate').value =
+    d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
 
-function getDate() {
-  return document.getElementById('entryDate').value;
+function getDate() { return document.getElementById('entryDate').value; }
+
+function getDateLabel() {
+  const d = getDate();
+  if (!d) return '';
+  const today = new Date();
+  const sel = new Date(d + 'T00:00:00');
+  const todayStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+  if (d === todayStr) return "Today's";
+  return sel.toLocaleDateString('en-IN', { day:'numeric', month:'short' }) + "'s";
 }
+
+function onDateChange() { loadDateData(); }
 
 // ── TABS ──
 function switchTab(tabId, btn) {
@@ -675,7 +468,167 @@ function switchTab(tabId, btn) {
   btn.classList.add('active');
 }
 
-// ── SUPPLIER GRID ──
+// ══════════════════════════════════════════
+//  DATA LOADING — the core change
+// ══════════════════════════════════════════
+
+async function loadDateData() {
+  const date = getDate();
+  if (!date || !scriptUrl) {
+    // No connection yet — just clear everything
+    clearAllViews();
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const url = scriptUrl + '?action=getByDate&date=' + encodeURIComponent(date);
+    const res = await fetch(url, { redirect: 'follow' });
+    const json = await res.json();
+
+    if (json.status === 'success') {
+      cachedData = json.data;
+      populatePurchases(json.data.purchases || []);
+      populateHistory('upi', json.data.upi_sales || [], 'upiHistory', 'upiHistoryTitle');
+      populateHistory('cash', json.data.cash_sales || [], 'cashHistory', 'cashHistoryTitle');
+      populateExpenseHistory(json.data.expenses || []);
+    } else {
+      console.warn('Load error:', json.message);
+      clearAllViews();
+    }
+  } catch (err) {
+    console.warn('Failed to load data:', err);
+    // Don't show error on every date change — just clear
+    clearAllViews();
+  }
+  setLoading(false);
+}
+
+function clearAllViews() {
+  cachedData = null;
+  document.querySelectorAll('#supplierGrid input').forEach(i => { i.value = ''; i.classList.remove('has-data'); });
+  updatePurchaseTotal();
+  document.getElementById('purchaseSavedBadge').innerHTML = '';
+  document.getElementById('upiHistory').innerHTML = '<div class="history-empty">No entries yet</div>';
+  document.getElementById('cashHistory').innerHTML = '<div class="history-empty">No entries yet</div>';
+  document.getElementById('expenseHistory').innerHTML = '<div class="history-empty">No entries yet</div>';
+  updateHistoryTitles();
+}
+
+// ── Populate purchase grid with existing data ──
+function populatePurchases(rows) {
+  // Clear first
+  document.querySelectorAll('#supplierGrid input').forEach(i => { i.value = ''; i.classList.remove('has-data'); });
+
+  let hasData = false;
+  rows.forEach(row => {
+    const supplier = row['Supplier'];
+    const morning = row['Morning (L)'];
+    const evening = row['Evening (L)'];
+    const mEl = document.querySelector(`input[data-supplier="${supplier}"][data-session="morning"]`);
+    const eEl = document.querySelector(`input[data-supplier="${supplier}"][data-session="evening"]`);
+    if (mEl && morning) { mEl.value = morning; mEl.classList.add('has-data'); hasData = true; }
+    if (eEl && evening) { eEl.value = evening; eEl.classList.add('has-data'); hasData = true; }
+  });
+
+  updatePurchaseTotal();
+
+  // Show saved badge if data exists
+  const badge = document.getElementById('purchaseSavedBadge');
+  if (hasData && rows.length > 0) {
+    const ts = rows[0]['Saved At'] || '';
+    badge.innerHTML = '<span class="saved-badge">✓ Saved' + (ts ? ' · ' + ts : '') + '</span>';
+  } else {
+    badge.innerHTML = '';
+  }
+}
+
+// ── Populate sales history ──
+function populateHistory(type, rows, containerId, titleId) {
+  const container = document.getElementById(containerId);
+  updateHistoryTitles();
+
+  if (rows.length === 0) {
+    container.innerHTML = '<div class="history-empty">No entries for this date</div>';
+    return;
+  }
+
+  let totalAmt = 0;
+  let totalLtr = 0;
+  let html = '';
+
+  rows.forEach(row => {
+    const customer = row['Customer'] || '—';
+    const litres = row['Litres'] || 0;
+    const amount = row['Amount (₹)'] || 0;
+    const note = type === 'upi' ? (row['UPI Ref'] || '') : (row['Note'] || '');
+    totalAmt += parseFloat(amount) || 0;
+    totalLtr += parseFloat(litres) || 0;
+
+    html += `<div class="history-card">
+      <div class="history-left">
+        <div class="history-name">${customer}</div>
+        <div class="history-detail">${litres ? litres + ' L' : ''}${note ? ' · ' + note : ''}</div>
+      </div>
+      <div class="history-amount">₹${amount}</div>
+    </div>`;
+  });
+
+  // Summary bar
+  html += `<div style="display:flex; justify-content:space-between; padding:10px 4px 0; font-size:13px; font-weight:700;">
+    <span style="color:var(--text-secondary);">${rows.length} entries · ${totalLtr} L</span>
+    <span style="color:var(--success);">Total: ₹${totalAmt}</span>
+  </div>`;
+
+  container.innerHTML = html;
+}
+
+// ── Populate expense history ──
+function populateExpenseHistory(rows) {
+  const container = document.getElementById('expenseHistory');
+  updateHistoryTitles();
+
+  if (rows.length === 0) {
+    container.innerHTML = '<div class="history-empty">No expenses for this date</div>';
+    return;
+  }
+
+  let total = 0;
+  let html = '';
+
+  rows.forEach(row => {
+    const cat = row['Category'] || '—';
+    const amount = row['Amount (₹)'] || 0;
+    const qty = row['Quantity'] || '';
+    const note = row['Note'] || '';
+    total += parseFloat(amount) || 0;
+
+    html += `<div class="history-card">
+      <div class="history-left">
+        <div class="history-name">${cat}</div>
+        <div class="history-detail">${qty ? 'Qty: ' + qty : ''}${note ? (qty ? ' · ' : '') + note : ''}</div>
+      </div>
+      <div class="history-amount" style="color:var(--danger);">₹${amount}</div>
+    </div>`;
+  });
+
+  html += `<div style="display:flex; justify-content:flex-end; padding:10px 4px 0; font-size:13px; font-weight:700;">
+    <span style="color:var(--danger);">Total: ₹${total}</span>
+  </div>`;
+
+  container.innerHTML = html;
+}
+
+function updateHistoryTitles() {
+  const label = getDateLabel();
+  document.getElementById('upiHistoryTitle').textContent = label + ' UPI Sales';
+  document.getElementById('cashHistoryTitle').textContent = label + ' Cash Sales';
+  document.getElementById('expenseHistoryTitle').textContent = label + ' Expenses';
+}
+
+// ══════════════════════════════════════════
+//  SUPPLIER GRID
+// ══════════════════════════════════════════
 function renderSupplierGrid() {
   const grid = document.getElementById('supplierGrid');
   grid.innerHTML = suppliers.map(name => `
@@ -698,9 +651,10 @@ function renderSupplierGrid() {
 }
 
 function updatePurchaseTotal() {
-  const inputs = document.querySelectorAll('#supplierGrid input[type="number"]');
   let total = 0;
-  inputs.forEach(inp => { total += parseFloat(inp.value) || 0; });
+  document.querySelectorAll('#supplierGrid input[type="number"]').forEach(inp => {
+    total += parseFloat(inp.value) || 0;
+  });
   document.getElementById('purchaseTotal').textContent = total % 1 === 0 ? total : total.toFixed(2);
 }
 
@@ -714,47 +668,37 @@ function selectChip(el) {
 function autoFillAmount(prefix) {
   if (!milkRate) return;
   const litres = parseFloat(document.getElementById(prefix + 'Litres').value) || 0;
-  if (litres > 0) {
-    document.getElementById(prefix + 'Amount').value = Math.round(litres * milkRate);
-  }
+  if (litres > 0) document.getElementById(prefix + 'Amount').value = Math.round(litres * milkRate);
 }
 
-// ── SAVE FUNCTIONS ──
+// ══════════════════════════════════════════
+//  SAVE FUNCTIONS (reload data after save)
+// ══════════════════════════════════════════
+
 async function savePurchases() {
   const date = getDate();
-  if (!date) { showToast('Please select a date', 'error'); return; }
+  if (!date) { showToast('Select a date', 'error'); return; }
 
   const rows = [];
   suppliers.forEach(name => {
-    const mornEl = document.querySelector(`input[data-supplier="${name}"][data-session="morning"]`);
-    const eveEl = document.querySelector(`input[data-supplier="${name}"][data-session="evening"]`);
-    const morn = parseFloat(mornEl.value) || 0;
-    const eve = parseFloat(eveEl.value) || 0;
-    if (morn > 0 || eve > 0) {
-      rows.push([date, name, morn, eve, morn + eve]);
-    }
+    const morn = parseFloat(document.querySelector(`input[data-supplier="${name}"][data-session="morning"]`).value) || 0;
+    const eve = parseFloat(document.querySelector(`input[data-supplier="${name}"][data-session="evening"]`).value) || 0;
+    if (morn > 0 || eve > 0) rows.push([date, name, morn, eve, morn + eve]);
   });
 
   if (rows.length === 0) { showToast('No entries to save', 'error'); return; }
 
   const btn = document.getElementById('btnSavePurchases');
-  btn.disabled = true;
-  btn.innerHTML = 'Saving…';
+  btn.disabled = true; btn.innerHTML = 'Saving…';
 
-  const ok = await sendToSheet({
-    action: 'purchases',
-    date: date,
-    rows: rows
-  });
+  const ok = await sendToSheet({ action: 'purchases', date: date, rows: rows });
 
-  btn.disabled = false;
-  btn.innerHTML = 'Save Purchases';
+  btn.disabled = false; btn.innerHTML = 'Save Purchases';
 
   if (ok) {
     showToast(`✓ ${rows.length} entries saved`, 'success');
-    // Clear inputs
-    document.querySelectorAll('#supplierGrid input').forEach(i => i.value = '');
-    updatePurchaseTotal();
+    // Reload to show saved state (data stays visible)
+    await loadDateData();
   }
 }
 
@@ -765,21 +709,16 @@ async function saveUpiSale() {
   const amount = parseFloat(document.getElementById('upiAmount').value) || 0;
   const ref = document.getElementById('upiRef').value.trim();
 
-  if (!customer || amount <= 0) {
-    showToast('Enter customer and amount', 'error'); return;
-  }
+  if (!customer || amount <= 0) { showToast('Enter customer and amount', 'error'); return; }
 
-  const ok = await sendToSheet({
-    action: 'upi_sale',
-    row: [date, customer, litres, amount, ref]
-  });
-
+  const ok = await sendToSheet({ action: 'upi_sale', row: [date, customer, litres, amount, ref] });
   if (ok) {
     showToast(`✓ UPI sale saved — ₹${amount}`, 'success');
     document.getElementById('upiCustomer').value = '';
     document.getElementById('upiLitres').value = '';
     document.getElementById('upiAmount').value = '';
     document.getElementById('upiRef').value = '';
+    await loadDateData(); // Reload to show new entry in history
   }
 }
 
@@ -790,21 +729,16 @@ async function saveCashSale() {
   const amount = parseFloat(document.getElementById('cashAmount').value) || 0;
   const note = document.getElementById('cashNote').value.trim();
 
-  if (!customer || amount <= 0) {
-    showToast('Enter customer and amount', 'error'); return;
-  }
+  if (!customer || amount <= 0) { showToast('Enter customer and amount', 'error'); return; }
 
-  const ok = await sendToSheet({
-    action: 'cash_sale',
-    row: [date, customer, litres, amount, note]
-  });
-
+  const ok = await sendToSheet({ action: 'cash_sale', row: [date, customer, litres, amount, note] });
   if (ok) {
     showToast(`✓ Cash sale saved — ₹${amount}`, 'success');
     document.getElementById('cashCustomer').value = '';
     document.getElementById('cashLitres').value = '';
     document.getElementById('cashAmount').value = '';
     document.getElementById('cashNote').value = '';
+    await loadDateData();
   }
 }
 
@@ -815,64 +749,56 @@ async function saveExpense() {
   const qty = parseFloat(document.getElementById('expenseQty').value) || 0;
   const note = document.getElementById('expenseNote').value.trim();
 
-  if (amount <= 0) {
-    showToast('Enter expense amount', 'error'); return;
-  }
+  if (amount <= 0) { showToast('Enter expense amount', 'error'); return; }
 
-  const ok = await sendToSheet({
-    action: 'expense',
-    row: [date, category, amount, qty, note]
-  });
-
+  const ok = await sendToSheet({ action: 'expense', row: [date, category, amount, qty, note] });
   if (ok) {
-    showToast(`✓ Expense saved — ₹${amount} (${category})`, 'success');
+    showToast(`✓ ₹${amount} (${category}) saved`, 'success');
     document.getElementById('expenseAmount').value = '';
     document.getElementById('expenseQty').value = '';
     document.getElementById('expenseNote').value = '';
+    await loadDateData();
   }
 }
 
 // ── API ──
 async function sendToSheet(data) {
-  if (!scriptUrl) {
-    showToast('Set up Google Sheet URL in Settings first', 'error');
-    return false;
-  }
-
+  if (!scriptUrl) { showToast('Set up Google Sheet URL in Settings first', 'error'); return false; }
+  setLoading(true);
   try {
     const res = await fetch(scriptUrl, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: { 'Content-Type': 'text/plain' },
-      redirect: 'follow'
+      method: 'POST', body: JSON.stringify(data),
+      headers: { 'Content-Type': 'text/plain' }, redirect: 'follow'
     });
     const json = await res.json();
+    setLoading(false);
     if (json.status === 'success') return true;
     showToast('Error: ' + (json.message || 'Unknown'), 'error');
     return false;
   } catch (err) {
-    // If CORS blocks reading the response, the data may still have been saved.
-    // We optimistically treat network errors as success with a note.
-    console.warn('Fetch error (data may still be saved):', err);
+    setLoading(false);
+    console.warn('Fetch error:', err);
     showToast('✓ Sent (could not confirm — check sheet)', 'info');
     return true;
   }
 }
 
 async function testConnection() {
-  if (!scriptUrl) {
-    showToast('Enter a Script URL first', 'error'); return;
-  }
+  if (!scriptUrl) { showToast('Enter a Script URL first', 'error'); return; }
+  setLoading(true);
   try {
     const res = await fetch(scriptUrl + '?action=ping', { redirect: 'follow' });
     const json = await res.json();
+    setLoading(false);
     if (json.status === 'ok') {
-      showToast('✓ Connected to Google Sheet!', 'success');
+      showToast('✓ Connected!', 'success');
       updateConnectionStatus(true);
+      loadDateData(); // Load data now that we're connected
     } else {
       showToast('Unexpected response', 'error');
     }
   } catch (err) {
+    setLoading(false);
     showToast('Connection failed — check URL', 'error');
     updateConnectionStatus(false);
   }
@@ -881,16 +807,14 @@ async function testConnection() {
 // ── SETTINGS ──
 function saveScriptUrl() {
   scriptUrl = document.getElementById('scriptUrl').value.trim();
-  localStorage.setItem(LS_KEYS.scriptUrl, scriptUrl);
+  localStorage.setItem(LS.scriptUrl, scriptUrl);
   showToast('URL saved', 'success');
   updateConnectionStatus();
 }
-
 function saveMilkRate() {
   milkRate = parseFloat(document.getElementById('milkRate').value) || 0;
-  localStorage.setItem(LS_KEYS.milkRate, milkRate);
+  localStorage.setItem(LS.milkRate, milkRate);
 }
-
 function updateConnectionStatus(connected) {
   const dot = document.getElementById('statusDot');
   const text = document.getElementById('statusText');
@@ -903,44 +827,39 @@ function updateConnectionStatus(connected) {
 
 // ── SUPPLIER MANAGEMENT ──
 function renderSupplierTags() {
-  const container = document.getElementById('supplierTags');
-  container.innerHTML = suppliers.map((name, i) => `
-    <span class="supplier-tag">
-      ${name}
-      <span class="remove" onclick="removeSupplier(${i})">×</span>
-    </span>
-  `).join('');
+  document.getElementById('supplierTags').innerHTML = suppliers.map((name, i) =>
+    `<span class="supplier-tag">${name}<span class="remove" onclick="removeSupplier(${i})">×</span></span>`
+  ).join('');
 }
-
 function addSupplier() {
   const input = document.getElementById('newSupplierName');
   const name = input.value.trim();
   if (!name) return;
   if (suppliers.includes(name)) { showToast('Already exists', 'error'); return; }
   suppliers.push(name);
-  localStorage.setItem(LS_KEYS.suppliers, JSON.stringify(suppliers));
+  localStorage.setItem(LS.suppliers, JSON.stringify(suppliers));
   input.value = '';
-  renderSupplierGrid();
-  renderSupplierTags();
+  renderSupplierGrid(); renderSupplierTags();
   showToast(`Added ${name}`, 'success');
+  loadDateData(); // Reload to fill new supplier with any existing data
 }
-
 function removeSupplier(index) {
-  const name = suppliers[index];
-  if (!confirm(`Remove ${name}?`)) return;
+  if (!confirm(`Remove ${suppliers[index]}?`)) return;
   suppliers.splice(index, 1);
-  localStorage.setItem(LS_KEYS.suppliers, JSON.stringify(suppliers));
-  renderSupplierGrid();
-  renderSupplierTags();
+  localStorage.setItem(LS.suppliers, JSON.stringify(suppliers));
+  renderSupplierGrid(); renderSupplierTags();
 }
 
-// ── TOAST ──
+// ── UI HELPERS ──
 function showToast(msg, type = 'info') {
   const toast = document.getElementById('toast');
   toast.textContent = msg;
   toast.className = 'toast ' + type + ' show';
-  clearTimeout(toast._timeout);
-  toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+function setLoading(on) {
+  document.getElementById('loadingBar').classList.toggle('active', on);
 }
 
 // ── GO ──
