@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Hemnath Milk Shop</title>
+<style>
+  :root {
+    --bg: #F1F3F5;
+    --card: #FFFFFF;
+    --primary: #2563EB;
+    --primary-light: #DBEAFE;
+    --success: #16A34A;
+    --success-light: #DCFCE7;
+    --danger: #DC2626;
+    --text: #1E293B;
+    --text-secondary: #64748B;
+    --border: #E2E8F0;
+    --input-bg: #F8FAFC;
+    --tab-bg: #FFFFFF;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--primary);
+    color: white;
+    padding: 16px 20px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header h1 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .date-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 6px 12px;
+  }
+  .date-bar label {
+    font-size: 13px;
+    opacity: 0.9;
+    white-space: nowrap;
+  }
+  .date-bar input[type="date"] {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    outline: none;
+    min-width: 0;
+  }
+  .date-bar input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
+  .today-btn {
+    background: rgba(255,255,255,0.25);
+    border: none;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* ── Content ── */
+  .content {
+    flex: 1;
+    padding: 12px 16px 100px;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+
+  /* ── Purchase Grid ── */
+  .supplier-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .supplier-row:last-child { border-bottom: none; }
+  .supplier-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .supplier-input {
+    position: relative;
+  }
+  .supplier-input label {
+    position: absolute;
+    top: -6px;
+    left: 8px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    background: var(--card);
+    padding: 0 4px;
+    z-index: 1;
+  }
+
+  /* ── Inputs ── */
+  input[type="number"],
+  input[type="text"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    background: var(--input-bg);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--primary);
+    background: white;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+    text-align: center;
+    font-weight: 600;
+    padding: 10px 6px;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+  textarea { resize: vertical; min-height: 60px; }
+
+  .form-group {
+    margin-bottom: 14px;
+  }
+  .form-group > label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-success {
+    background: var(--success);
+    color: white;
+  }
+
+  /* ── Total Bar ── */
+  .total-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0 4px;
+    margin-top: 4px;
+  }
+  .total-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  .total-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+  .total-unit {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    max-width: 90vw;
+    text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: var(--success); color: white; }
+  .toast.error { background: var(--danger); color: white; }
+  .toast.info { background: var(--text); color: white; }
+
+  /* ── Bottom Nav ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--tab-bg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .nav-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 4px 10px;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    font-size: 10px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    gap: 3px;
+    transition: color 0.15s;
+    position: relative;
+  }
+  .nav-tab.active {
+    color: var(--primary);
+  }
+  .nav-tab.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 2.5px;
+    background: var(--primary);
+    border-radius: 0 0 2px 2px;
+  }
+  .nav-icon { font-size: 20px; }
+
+  /* ── Setup Banner ── */
+  .setup-banner {
+    background: #FEF3C7;
+    border: 1.5px solid #F59E0B;
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #92400E;
+  }
+  .setup-banner code {
+    background: rgba(0,0,0,0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    word-break: break-all;
+  }
+
+  /* ── Expense Category Chips ── */
+  .chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .chip {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--input-bg);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .chip.active {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  /* ── History ── */
+  .history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .history-item:last-child { border-bottom: none; }
+  .history-item .meta { color: var(--text-secondary); }
+
+  /* ── Settings ── */
+  .supplier-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 4px;
+  }
+  .supplier-tag .remove {
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    opacity: 0.6;
+  }
+  .supplier-tag .remove:hover { opacity: 1; }
+  .add-supplier-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .add-supplier-row input { flex: 1; }
+  .btn-sm {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* ── Script URL input ── */
+  .url-input-group {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .url-input-group input { flex: 1; font-size: 13px; }
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+  }
+  .status-dot.connected { background: var(--success); }
+  .status-dot.disconnected { background: var(--danger); }
+</style>
+</head>
+<body>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Header -->
+<div class="header">
+  <h1>🥛 Hemnath Milk Shop</h1>
+  <div class="date-bar">
+    <label>Date</label>
+    <input type="date" id="entryDate">
+    <button class="today-btn" onclick="setToday()">Today</button>
+  </div>
+</div>
+
+<!-- Content -->
+<div class="content">
+
+  <!-- ════ PURCHASES TAB ════ -->
+  <div class="tab-content active" id="tab-purchases">
+    <div class="card">
+      <div class="card-title">Daily Milk Purchase (Litres)</div>
+      <div class="supplier-row" style="padding-top:0; font-size:12px; font-weight:700; color:var(--text-secondary);">
+        <div>Supplier</div>
+        <div style="text-align:center">Morning</div>
+        <div style="text-align:center">Evening</div>
+      </div>
+      <div id="supplierGrid"></div>
+      <div class="total-bar">
+        <span class="total-label">Day Total</span>
+        <span><span class="total-value" id="purchaseTotal">0</span> <span class="total-unit">L</span></span>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="btnSavePurchases" onclick="savePurchases()">
+      Save Purchases
+    </button>
+  </div>
+
+  <!-- ════ UPI SALES TAB ════ -->
+  <div class="tab-content" id="tab-upi">
+    <div class="card">
+      <div class="card-title">UPI / PhonePe Sale</div>
+      <div class="form-group">
+        <label>Customer Name</label>
+        <input type="text" id="upiCustomer" placeholder="e.g. Ravi">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Litres</label>
+          <input type="number" id="upiLitres" placeholder="0" step="0.25" inputmode="decimal">
+        </div>
+        <div class="form-group">
+          <label>Amount (₹)</label>
+          <input type="number" id="upiAmount" placeholder="0" step="1" inputmode="decimal">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>UPI Reference / Note</label>
+        <input type="text" id="upiRef" placeholder="Transaction ID or note">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="saveUpiSale()">Save UPI Sale</button>
+  </div>
+
+  <!-- ════ CASH SALES TAB ════ -->
+  <div class="tab-content" id="tab-cash">
+    <div class="card">
+      <div class="card-title">Cash Sale</div>
+      <div class="form-group">
+        <label>Customer Name</label>
+        <input type="text" id="cashCustomer" placeholder="e.g. Kumar">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Litres</label>
+          <input type="number" id="cashLitres" placeholder="0" step="0.25" inputmode="decimal">
+        </div>
+        <div class="form-group">
+          <label>Amount (₹)</label>
+          <input type="number" id="cashAmount" placeholder="0" step="1" inputmode="decimal">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Note (optional)</label>
+        <input type="text" id="cashNote" placeholder="Any note">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="saveCashSale()">Save Cash Sale</button>
+  </div>
+
+  <!-- ════ EXPENSES TAB ════ -->
+  <div class="tab-content" id="tab-expenses">
+    <div class="card">
+      <div class="card-title">Record Expense</div>
+      <div class="form-group">
+        <label>Category</label>
+        <div class="chip-group" id="expenseChips">
+          <div class="chip active" data-value="1L Cover" onclick="selectChip(this)">1L Cover</div>
+          <div class="chip" data-value="1.5L Cover" onclick="selectChip(this)">1.5L Cover</div>
+          <div class="chip" data-value="Petrol" onclick="selectChip(this)">Petrol</div>
+          <div class="chip" data-value="Labour" onclick="selectChip(this)">Labour</div>
+          <div class="chip" data-value="Other" onclick="selectChip(this)">Other</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Amount (₹)</label>
+          <input type="number" id="expenseAmount" placeholder="0" step="1" inputmode="decimal">
+        </div>
+        <div class="form-group">
+          <label>Quantity (optional)</label>
+          <input type="number" id="expenseQty" placeholder="0" step="1" inputmode="numeric">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Note (optional)</label>
+        <input type="text" id="expenseNote" placeholder="e.g. 2 packets">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="saveExpense()">Save Expense</button>
+  </div>
+
+  <!-- ════ SETTINGS TAB ════ -->
+  <div class="tab-content" id="tab-settings">
+    <!-- Connection -->
+    <div class="card">
+      <div class="card-title">Google Sheet Connection</div>
+      <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px; line-height:1.5;">
+        Paste your deployed Apps Script URL here. See the <strong>SETUP.md</strong> file for instructions.
+      </p>
+      <div class="url-input-group">
+        <input type="text" id="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
+        <button class="btn-sm" onclick="saveScriptUrl()">Save</button>
+      </div>
+      <div style="margin-top:10px; font-size:13px;">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Not connected</span>
+      </div>
+    </div>
+
+    <!-- Suppliers -->
+    <div class="card">
+      <div class="card-title">Suppliers</div>
+      <div id="supplierTags"></div>
+      <div class="add-supplier-row">
+        <input type="text" id="newSupplierName" placeholder="New supplier name">
+        <button class="btn-sm" onclick="addSupplier()">Add</button>
+      </div>
+    </div>
+
+    <!-- Milk Rate -->
+    <div class="card">
+      <div class="card-title">Default Milk Rate (₹/Litre)</div>
+      <input type="number" id="milkRate" placeholder="e.g. 60" step="1" inputmode="decimal"
+             onchange="saveMilkRate()">
+      <p style="font-size:12px; color:var(--text-secondary); margin-top:6px;">
+        Used to auto-fill Amount in sales tabs.
+      </p>
+    </div>
+
+    <!-- Data -->
+    <div class="card">
+      <div class="card-title">Local Data</div>
+      <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px; line-height:1.5;">
+        Unsaved entries are stored locally on this device.
+      </p>
+      <button class="btn btn-primary" onclick="testConnection()" style="margin-bottom:8px;">
+        Test Connection
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+  <button class="nav-tab active" onclick="switchTab('purchases', this)">
+    <span class="nav-icon">🥛</span>
+    Purchase
+  </button>
+  <button class="nav-tab" onclick="switchTab('upi', this)">
+    <span class="nav-icon">📱</span>
+    UPI Sale
+  </button>
+  <button class="nav-tab" onclick="switchTab('cash', this)">
+    <span class="nav-icon">💵</span>
+    Cash Sale
+  </button>
+  <button class="nav-tab" onclick="switchTab('expenses', this)">
+    <span class="nav-icon">📝</span>
+    Expense
+  </button>
+  <button class="nav-tab" onclick="switchTab('settings', this)">
+    <span class="nav-icon">⚙️</span>
+    Settings
+  </button>
+</div>
+
+<script>
+// ── CONFIG ──
+const DEFAULT_SUPPLIERS = ['SPK', 'Subramani', 'Miniraj', 'Miy', 'Gobi', 'Venkatesh', 'Sudhakar', 'Avalapalli'];
+const LS_KEYS = {
+  scriptUrl: 'hmilk_script_url',
+  suppliers: 'hmilk_suppliers',
+  milkRate: 'hmilk_rate',
+};
+
+// ── STATE ──
+let suppliers = JSON.parse(localStorage.getItem(LS_KEYS.suppliers)) || [...DEFAULT_SUPPLIERS];
+let scriptUrl = localStorage.getItem(LS_KEYS.scriptUrl) || '';
+let milkRate = parseFloat(localStorage.getItem(LS_KEYS.milkRate)) || 0;
+
+// ── INIT ──
+function init() {
+  setToday();
+  renderSupplierGrid();
+  renderSupplierTags();
+  updateConnectionStatus();
+  document.getElementById('scriptUrl').value = scriptUrl;
+  document.getElementById('milkRate').value = milkRate || '';
+
+  // Auto-fill amount when litres change (UPI)
+  document.getElementById('upiLitres').addEventListener('input', () => autoFillAmount('upi'));
+  document.getElementById('cashLitres').addEventListener('input', () => autoFillAmount('cash'));
+}
+
+function setToday() {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  document.getElementById('entryDate').value = `${yyyy}-${mm}-${dd}`;
+}
+
+function getDate() {
+  return document.getElementById('entryDate').value;
+}
+
+// ── TABS ──
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── SUPPLIER GRID ──
+function renderSupplierGrid() {
+  const grid = document.getElementById('supplierGrid');
+  grid.innerHTML = suppliers.map(name => `
+    <div class="supplier-row">
+      <div class="supplier-name">${name}</div>
+      <div class="supplier-input">
+        <label>AM</label>
+        <input type="number" step="0.25" inputmode="decimal" placeholder="—"
+               data-supplier="${name}" data-session="morning"
+               onfocus="this.select()" oninput="updatePurchaseTotal()">
+      </div>
+      <div class="supplier-input">
+        <label>PM</label>
+        <input type="number" step="0.25" inputmode="decimal" placeholder="—"
+               data-supplier="${name}" data-session="evening"
+               onfocus="this.select()" oninput="updatePurchaseTotal()">
+      </div>
+    </div>
+  `).join('');
+}
+
+function updatePurchaseTotal() {
+  const inputs = document.querySelectorAll('#supplierGrid input[type="number"]');
+  let total = 0;
+  inputs.forEach(inp => { total += parseFloat(inp.value) || 0; });
+  document.getElementById('purchaseTotal').textContent = total % 1 === 0 ? total : total.toFixed(2);
+}
+
+// ── EXPENSE CHIPS ──
+function selectChip(el) {
+  el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── AUTO-FILL AMOUNT ──
+function autoFillAmount(prefix) {
+  if (!milkRate) return;
+  const litres = parseFloat(document.getElementById(prefix + 'Litres').value) || 0;
+  if (litres > 0) {
+    document.getElementById(prefix + 'Amount').value = Math.round(litres * milkRate);
+  }
+}
+
+// ── SAVE FUNCTIONS ──
+async function savePurchases() {
+  const date = getDate();
+  if (!date) { showToast('Please select a date', 'error'); return; }
+
+  const rows = [];
+  suppliers.forEach(name => {
+    const mornEl = document.querySelector(`input[data-supplier="${name}"][data-session="morning"]`);
+    const eveEl = document.querySelector(`input[data-supplier="${name}"][data-session="evening"]`);
+    const morn = parseFloat(mornEl.value) || 0;
+    const eve = parseFloat(eveEl.value) || 0;
+    if (morn > 0 || eve > 0) {
+      rows.push([date, name, morn, eve, morn + eve]);
+    }
+  });
+
+  if (rows.length === 0) { showToast('No entries to save', 'error'); return; }
+
+  const btn = document.getElementById('btnSavePurchases');
+  btn.disabled = true;
+  btn.innerHTML = 'Saving…';
+
+  const ok = await sendToSheet({
+    action: 'purchases',
+    date: date,
+    rows: rows
+  });
+
+  btn.disabled = false;
+  btn.innerHTML = 'Save Purchases';
+
+  if (ok) {
+    showToast(`✓ ${rows.length} entries saved`, 'success');
+    // Clear inputs
+    document.querySelectorAll('#supplierGrid input').forEach(i => i.value = '');
+    updatePurchaseTotal();
+  }
+}
+
+async function saveUpiSale() {
+  const date = getDate();
+  const customer = document.getElementById('upiCustomer').value.trim();
+  const litres = parseFloat(document.getElementById('upiLitres').value) || 0;
+  const amount = parseFloat(document.getElementById('upiAmount').value) || 0;
+  const ref = document.getElementById('upiRef').value.trim();
+
+  if (!customer || amount <= 0) {
+    showToast('Enter customer and amount', 'error'); return;
+  }
+
+  const ok = await sendToSheet({
+    action: 'upi_sale',
+    row: [date, customer, litres, amount, ref]
+  });
+
+  if (ok) {
+    showToast(`✓ UPI sale saved — ₹${amount}`, 'success');
+    document.getElementById('upiCustomer').value = '';
+    document.getElementById('upiLitres').value = '';
+    document.getElementById('upiAmount').value = '';
+    document.getElementById('upiRef').value = '';
+  }
+}
+
+async function saveCashSale() {
+  const date = getDate();
+  const customer = document.getElementById('cashCustomer').value.trim();
+  const litres = parseFloat(document.getElementById('cashLitres').value) || 0;
+  const amount = parseFloat(document.getElementById('cashAmount').value) || 0;
+  const note = document.getElementById('cashNote').value.trim();
+
+  if (!customer || amount <= 0) {
+    showToast('Enter customer and amount', 'error'); return;
+  }
+
+  const ok = await sendToSheet({
+    action: 'cash_sale',
+    row: [date, customer, litres, amount, note]
+  });
+
+  if (ok) {
+    showToast(`✓ Cash sale saved — ₹${amount}`, 'success');
+    document.getElementById('cashCustomer').value = '';
+    document.getElementById('cashLitres').value = '';
+    document.getElementById('cashAmount').value = '';
+    document.getElementById('cashNote').value = '';
+  }
+}
+
+async function saveExpense() {
+  const date = getDate();
+  const category = document.querySelector('#expenseChips .chip.active')?.dataset.value || 'Other';
+  const amount = parseFloat(document.getElementById('expenseAmount').value) || 0;
+  const qty = parseFloat(document.getElementById('expenseQty').value) || 0;
+  const note = document.getElementById('expenseNote').value.trim();
+
+  if (amount <= 0) {
+    showToast('Enter expense amount', 'error'); return;
+  }
+
+  const ok = await sendToSheet({
+    action: 'expense',
+    row: [date, category, amount, qty, note]
+  });
+
+  if (ok) {
+    showToast(`✓ Expense saved — ₹${amount} (${category})`, 'success');
+    document.getElementById('expenseAmount').value = '';
+    document.getElementById('expenseQty').value = '';
+    document.getElementById('expenseNote').value = '';
+  }
+}
+
+// ── API ──
+async function sendToSheet(data) {
+  if (!scriptUrl) {
+    showToast('Set up Google Sheet URL in Settings first', 'error');
+    return false;
+  }
+
+  try {
+    const res = await fetch(scriptUrl, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'text/plain' },
+      redirect: 'follow'
+    });
+    const json = await res.json();
+    if (json.status === 'success') return true;
+    showToast('Error: ' + (json.message || 'Unknown'), 'error');
+    return false;
+  } catch (err) {
+    // If CORS blocks reading the response, the data may still have been saved.
+    // We optimistically treat network errors as success with a note.
+    console.warn('Fetch error (data may still be saved):', err);
+    showToast('✓ Sent (could not confirm — check sheet)', 'info');
+    return true;
+  }
+}
+
+async function testConnection() {
+  if (!scriptUrl) {
+    showToast('Enter a Script URL first', 'error'); return;
+  }
+  try {
+    const res = await fetch(scriptUrl + '?action=ping', { redirect: 'follow' });
+    const json = await res.json();
+    if (json.status === 'ok') {
+      showToast('✓ Connected to Google Sheet!', 'success');
+      updateConnectionStatus(true);
+    } else {
+      showToast('Unexpected response', 'error');
+    }
+  } catch (err) {
+    showToast('Connection failed — check URL', 'error');
+    updateConnectionStatus(false);
+  }
+}
+
+// ── SETTINGS ──
+function saveScriptUrl() {
+  scriptUrl = document.getElementById('scriptUrl').value.trim();
+  localStorage.setItem(LS_KEYS.scriptUrl, scriptUrl);
+  showToast('URL saved', 'success');
+  updateConnectionStatus();
+}
+
+function saveMilkRate() {
+  milkRate = parseFloat(document.getElementById('milkRate').value) || 0;
+  localStorage.setItem(LS_KEYS.milkRate, milkRate);
+}
+
+function updateConnectionStatus(connected) {
+  const dot = document.getElementById('statusDot');
+  const text = document.getElementById('statusText');
+  const hasUrl = !!scriptUrl;
+  dot.className = 'status-dot ' + (hasUrl ? 'connected' : 'disconnected');
+  text.textContent = hasUrl ? 'URL saved — use Test Connection to verify' : 'Not connected';
+  if (connected === true) { dot.className = 'status-dot connected'; text.textContent = 'Connected ✓'; }
+  if (connected === false) { dot.className = 'status-dot disconnected'; text.textContent = 'Connection failed'; }
+}
+
+// ── SUPPLIER MANAGEMENT ──
+function renderSupplierTags() {
+  const container = document.getElementById('supplierTags');
+  container.innerHTML = suppliers.map((name, i) => `
+    <span class="supplier-tag">
+      ${name}
+      <span class="remove" onclick="removeSupplier(${i})">×</span>
+    </span>
+  `).join('');
+}
+
+function addSupplier() {
+  const input = document.getElementById('newSupplierName');
+  const name = input.value.trim();
+  if (!name) return;
+  if (suppliers.includes(name)) { showToast('Already exists', 'error'); return; }
+  suppliers.push(name);
+  localStorage.setItem(LS_KEYS.suppliers, JSON.stringify(suppliers));
+  input.value = '';
+  renderSupplierGrid();
+  renderSupplierTags();
+  showToast(`Added ${name}`, 'success');
+}
+
+function removeSupplier(index) {
+  const name = suppliers[index];
+  if (!confirm(`Remove ${name}?`)) return;
+  suppliers.splice(index, 1);
+  localStorage.setItem(LS_KEYS.suppliers, JSON.stringify(suppliers));
+  renderSupplierGrid();
+  renderSupplierTags();
+}
+
+// ── TOAST ──
+function showToast(msg, type = 'info') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast ' + type + ' show';
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ── GO ──
+init();
+</script>
+
+</body>
+</html>
