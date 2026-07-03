@@ -204,17 +204,17 @@
     </div>
     <div class="sales-stats">
       <div class="stat-card q-stat">
-        <div class="stat-total q-color" id="qTotal">0</div><div class="stat-label">¼ Litre</div>
+        <div class="stat-total q-color" id="qTotal">0</div><div class="stat-label">L (¼ pkt)</div>
         <div class="stat-breakdown"><span>☀️ <strong id="qAM">0</strong></span><span>🌙 <strong id="qPM">0</strong></span></div>
         <div class="stat-time" id="qLast">—</div>
       </div>
       <div class="stat-card h-stat">
-        <div class="stat-total h-color" id="hTotal">0</div><div class="stat-label">½ Litre</div>
+        <div class="stat-total h-color" id="hTotal">0</div><div class="stat-label">L (½ pkt)</div>
         <div class="stat-breakdown"><span>☀️ <strong id="hAM">0</strong></span><span>🌙 <strong id="hPM">0</strong></span></div>
         <div class="stat-time" id="hLast">—</div>
       </div>
       <div class="stat-card f-stat">
-        <div class="stat-total f-color" id="fTotal">0</div><div class="stat-label">1 Litre</div>
+        <div class="stat-total f-color" id="fTotal">0</div><div class="stat-label">L (1L pkt)</div>
         <div class="stat-breakdown"><span>☀️ <strong id="fAM">0</strong></span><span>🌙 <strong id="fPM">0</strong></span></div>
         <div class="stat-time" id="fLast">—</div>
       </div>
@@ -521,12 +521,33 @@ function populateSales(rows){
 }
 
 function setSalesUI(c){
-  const qt=c.qm+c.qe,ht=c.hm+c.he,ft=c.fm+c.fe;
-  document.getElementById('qTotal').textContent=qt;document.getElementById('qAM').textContent=c.qm;document.getElementById('qPM').textContent=c.qe;document.getElementById('qLast').textContent=c.lq?'Last: '+c.lq:'—';
-  document.getElementById('hTotal').textContent=ht;document.getElementById('hAM').textContent=c.hm;document.getElementById('hPM').textContent=c.he;document.getElementById('hLast').textContent=c.lh?'Last: '+c.lh:'—';
-  document.getElementById('fTotal').textContent=ft;document.getElementById('fAM').textContent=c.fm;document.getElementById('fPM').textContent=c.fe;document.getElementById('fLast').textContent=c.lf?'Last: '+c.lf:'—';
-  const totalL=(qt*0.25)+(ht*0.5)+(ft*1);
-  document.getElementById('totalLitresSold').textContent=totalL%1===0?totalL:totalL.toFixed(2);
+  const qt=c.qm+c.qe, ht=c.hm+c.he, ft=c.fm+c.fe;
+  // Show litres, not packet count
+  const qL=qt*0.25, hL=ht*0.5, fL=ft*1;
+  document.getElementById('qTotal').textContent=fmtL(qL);
+  document.getElementById('qAM').textContent=fmtL(c.qm*0.25)+' L';
+  document.getElementById('qPM').textContent=fmtL(c.qe*0.25)+' L';
+  document.getElementById('qLast').textContent=c.lq?'Last: '+fmtTime(c.lq):'—';
+  document.getElementById('hTotal').textContent=fmtL(hL);
+  document.getElementById('hAM').textContent=fmtL(c.hm*0.5)+' L';
+  document.getElementById('hPM').textContent=fmtL(c.he*0.5)+' L';
+  document.getElementById('hLast').textContent=c.lh?'Last: '+fmtTime(c.lh):'—';
+  document.getElementById('fTotal').textContent=fmtL(fL);
+  document.getElementById('fAM').textContent=fmtL(c.fm)+' L';
+  document.getElementById('fPM').textContent=fmtL(c.fe)+' L';
+  document.getElementById('fLast').textContent=c.lf?'Last: '+fmtTime(c.lf):'—';
+  const totalL=qL+hL+fL;
+  document.getElementById('totalLitresSold').textContent=fmtL(totalL);
+}
+function fmtL(v){return v%1===0?v:v.toFixed(2)}
+// Handle Google Sheets time auto-conversion: "1899-12-30T08:31:50.000Z" → "2:01 PM"
+function fmtTime(t){
+  if(!t)return'—';
+  const s=String(t);
+  if(s.includes('1899')||s.includes('1970')||s.includes('T')){
+    try{const d=new Date(s);if(!isNaN(d)){let h=d.getUTCHours(),m=d.getUTCMinutes();const a=h>=12?'PM':'AM';h=h%12||12;return h+':'+String(m).padStart(2,'0')+' '+a;}}catch(e){}
+  }
+  return s;
 }
 function resetSalesUI(){setSalesUI({qm:0,qe:0,hm:0,he:0,fm:0,fe:0,lq:'',lh:'',lf:''})}
 
@@ -569,9 +590,12 @@ async function tapSale(item){
   const period=getCurrentPeriod(),time=getCurrentTime();
   const pfx=item==='0.25L'?'q':item==='0.5L'?'h':'f';
 
-  // Optimistic
+  // Optimistic — increment by litres
+  const litreVal=item==='0.25L'?0.25:item==='0.5L'?0.5:1;
   const tEl=document.getElementById(pfx+'Total'),pEl=document.getElementById(pfx+(period==='Morning'?'AM':'PM'));
-  tEl.textContent=parseInt(tEl.textContent)+1;pEl.textContent=parseInt(pEl.textContent)+1;
+  tEl.textContent=fmtL(parseFloat(tEl.textContent)+litreVal);
+  const oldP=parseFloat(pEl.textContent)||0;
+  pEl.textContent=fmtL(oldP+litreVal)+' L';
   document.getElementById(pfx+'Last').textContent='Last: '+time;
   recalcLitres();
 
@@ -585,7 +609,7 @@ async function tapSale(item){
 async function undoSale(item){
   if(!scriptUrl){showToast('Set up connection','error');return}
   const pfx=item==='0.25L'?'q':item==='0.5L'?'h':'f';
-  if(parseInt(document.getElementById(pfx+'Total').textContent)<=0){showToast('Nothing to undo','error');return}
+  if(parseFloat(document.getElementById(pfx+'Total').textContent)<=0){showToast('Nothing to undo','error');return}
   const date=document.getElementById('salesDate').value;
   setLoading(true);
   try{
@@ -600,11 +624,10 @@ async function undoSale(item){
 function syncCounts(c){setSalesUI({qm:c.q_morning,qe:c.q_evening,hm:c.h_morning,he:c.h_evening,fm:c.f_morning,fe:c.f_evening,lq:c.last_q||'',lh:c.last_h||'',lf:c.last_f||''})}
 
 function recalcLitres(){
-  const qt=parseInt(document.getElementById('qTotal').textContent)||0;
-  const ht=parseInt(document.getElementById('hTotal').textContent)||0;
-  const ft=parseInt(document.getElementById('fTotal').textContent)||0;
-  const tl=(qt*0.25)+(ht*0.5)+(ft*1);
-  document.getElementById('totalLitresSold').textContent=tl%1===0?tl:tl.toFixed(2);
+  const qL=parseFloat(document.getElementById('qTotal').textContent)||0;
+  const hL=parseFloat(document.getElementById('hTotal').textContent)||0;
+  const fL=parseFloat(document.getElementById('fTotal').textContent)||0;
+  document.getElementById('totalLitresSold').textContent=fmtL(qL+hL+fL);
 }
 
 // ══════════════════════════════
