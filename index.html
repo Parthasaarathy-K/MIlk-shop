@@ -9,27 +9,27 @@
 <title>Hemnath Milk Shop</title>
 <style>
   :root {
-    --bg:#F1F3F5; --card:#FFFFFF; --primary:#2563EB; --primary-light:#DBEAFE;
-    --success:#16A34A; --success-light:#DCFCE7; --danger:#DC2626; --danger-light:#FEE2E2;
-    --text:#1E293B; --text-secondary:#64748B; --border:#E2E8F0;
-    --input-bg:#F8FAFC; --shadow:0 1px 3px rgba(0,0,0,0.08); --radius:12px;
-    --purple:#6366F1; --amber:#D97706; --teal:#0D9488;
+    --bg:#F1F3F5;--card:#FFFFFF;--primary:#2563EB;--primary-light:#DBEAFE;
+    --success:#16A34A;--success-light:#DCFCE7;--danger:#DC2626;--danger-light:#FEE2E2;
+    --text:#1E293B;--text-secondary:#64748B;--border:#E2E8F0;
+    --input-bg:#F8FAFC;--shadow:0 1px 3px rgba(0,0,0,0.08);--radius:12px;
+    --purple:#6366F1;--amber:#D97706;--teal:#0D9488;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;display:flex;flex-direction:column;overflow-x:hidden}
 
-  .header{background:var(--primary);color:white;padding:16px 20px 14px;position:sticky;top:0;z-index:100}
-  .header h1{font-size:18px;font-weight:700;margin-bottom:10px}
-  .date-bar{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border-radius:8px;padding:6px 12px}
-  .date-bar label{font-size:13px;opacity:0.9;white-space:nowrap}
-  .date-bar input[type="date"]{flex:1;background:transparent;border:none;color:white;font-size:15px;font-weight:600;font-family:inherit;outline:none;min-width:0}
-  .date-bar input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1)}
-  .today-btn{background:rgba(255,255,255,0.25);border:none;color:white;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;cursor:pointer;white-space:nowrap}
+  .header{background:var(--primary);color:white;padding:14px 20px;position:sticky;top:0;z-index:100}
+  .header h1{font-size:18px;font-weight:700}
 
   .content{flex:1;padding:12px 16px 100px;max-width:600px;margin:0 auto;width:100%}
   .tab-content{display:none}.tab-content.active{display:block}
   .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:12px}
   .card-title{font-size:14px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px}
+
+  /* Section Date Picker */
+  .section-date{display:flex;align-items:center;gap:8px;background:var(--primary-light);border-radius:10px;padding:8px 12px;margin-bottom:12px}
+  .section-date input[type="date"]{flex:1;background:transparent;border:none;color:var(--primary);font-size:15px;font-weight:700;font-family:inherit;outline:none}
+  .section-date .sd-btn{background:var(--primary);border:none;color:white;font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;cursor:pointer;white-space:nowrap}
 
   input[type="number"],input[type="text"],select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;font-family:inherit;background:var(--input-bg);color:var(--text);outline:none;transition:border-color 0.15s}
   input:focus,select:focus{border-color:var(--primary);background:white}
@@ -45,29 +45,24 @@
   .btn-primary{background:var(--primary);color:white}
   .btn-primary:disabled{opacity:0.5;cursor:not-allowed}
 
-  /* ═══ PURCHASE CARDS ═══ */
+  /* Purchase Cards */
   .purchase-card{padding:12px 0;border-bottom:1px solid var(--border)}
   .purchase-card:last-child{border-bottom:none}
-  .purchase-header{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--text)}
+  .purchase-header{font-size:15px;font-weight:700;margin-bottom:8px}
   .purchase-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .purchase-col-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-secondary);margin-bottom:4px}
   .purchase-pair{display:grid;grid-template-columns:1fr 1fr;gap:6px}
   .purchase-pair input{font-size:13px;padding:8px 6px}
   .purchase-pair .pi-label{font-size:9px;color:var(--text-secondary);text-align:center;margin-top:2px;font-weight:600}
 
-  /* ═══ SALES COUNTER ═══ */
+  /* Sales Counter */
   .period-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700}
   .period-badge.morning{background:#FEF3C7;color:#92400E}
   .period-badge.evening{background:#DBEAFE;color:#1E40AF}
 
   .counter-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
   .counter-col{display:flex;flex-direction:column;gap:6px}
-  .counter-btn{
-    background:var(--card);border:2.5px solid var(--border);border-radius:14px;
-    padding:16px 8px;cursor:pointer;text-align:center;
-    transition:transform 0.1s,box-shadow 0.15s;box-shadow:var(--shadow);
-    user-select:none;-webkit-user-select:none;
-  }
+  .counter-btn{background:var(--card);border:2.5px solid var(--border);border-radius:14px;padding:16px 8px;cursor:pointer;text-align:center;transition:transform 0.1s,box-shadow 0.15s;box-shadow:var(--shadow);user-select:none;-webkit-user-select:none}
   .counter-btn:active{transform:scale(0.93)}
   .counter-btn .cb-icon{font-size:28px;margin-bottom:2px}
   .counter-btn .cb-label{font-size:16px;font-weight:800;color:var(--text)}
@@ -75,8 +70,7 @@
   .counter-btn.quarter{border-color:var(--teal)}.counter-btn.quarter:active{box-shadow:0 0 0 3px #CCFBF1}
   .counter-btn.half{border-color:var(--purple)}.counter-btn.half:active{box-shadow:0 0 0 3px #E0E7FF}
   .counter-btn.full{border-color:var(--amber)}.counter-btn.full:active{box-shadow:0 0 0 3px #FEF3C7}
-  .price-override{width:100%}
-  .price-override input{font-size:12px;padding:7px 4px;border-radius:6px}
+  .price-override input{font-size:12px;padding:7px 4px;border-radius:6px;width:100%}
 
   .sales-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
   .stat-card{background:var(--card);border-radius:10px;box-shadow:var(--shadow);padding:10px;text-align:center}
@@ -90,7 +84,6 @@
   .stat-breakdown span{display:block;margin:1px 0}
   .stat-time{font-size:10px;color:var(--text-secondary);margin-top:4px;font-style:italic}
 
-
   .litres-bar{background:var(--primary-light);border-radius:10px;padding:10px;text-align:center;margin-bottom:10px}
   .litres-bar .lv-amount{font-size:18px;font-weight:800;color:var(--primary)}
   .litres-bar .lv-label{font-size:11px;font-weight:600;color:#1E40AF}
@@ -99,7 +92,6 @@
   .btn-undo{padding:9px 4px;border:1.5px solid var(--border);border-radius:8px;background:var(--card);font-size:12px;font-weight:600;color:var(--text-secondary);cursor:pointer;text-align:center;transition:all 0.15s}
   .btn-undo:active{background:var(--danger-light);border-color:var(--danger);color:var(--danger)}
 
-  /* Totals */
   .total-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 0 4px;margin-top:4px}
   .total-label{font-size:14px;font-weight:600;color:var(--text-secondary)}
   .total-value{font-size:22px;font-weight:800;color:var(--primary)}
@@ -150,26 +142,22 @@
   .toggle.on{background:var(--primary)}
   .toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:white;box-shadow:0 1px 3px rgba(0,0,0,0.2);transition:transform 0.2s}
   .toggle.on::after{transform:translateX(20px)}
-  .section-divider{height:1px;background:var(--border);margin:12px 0}
 </style>
 </head>
 <body>
 <div class="loading-bar" id="loadingBar"></div>
 <div class="toast" id="toast"></div>
 
-<div class="header">
-  <h1>🥛 Hemnath Milk Shop</h1>
-  <div class="date-bar">
-    <label>Date</label>
-    <input type="date" id="entryDate" onchange="onDateChange()">
-    <button class="today-btn" onclick="setToday()">Today</button>
-  </div>
-</div>
+<div class="header"><h1>🥛 Hemnath Milk Shop</h1></div>
 
 <div class="content">
 
   <!-- ════ PURCHASES ════ -->
   <div class="tab-content active" id="tab-purchases">
+    <div class="section-date">
+      <input type="date" id="purchaseDate" onchange="loadPurchaseData()">
+      <button class="sd-btn" onclick="setDateToday('purchaseDate',loadPurchaseData)">Today</button>
+    </div>
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <div class="card-title" style="margin-bottom:0">Daily Milk Purchase</div>
@@ -189,78 +177,48 @@
 
   <!-- ════ SALES COUNTER ════ -->
   <div class="tab-content" id="tab-sales">
+    <div class="section-date">
+      <input type="date" id="salesDate" onchange="loadSalesData()">
+      <button class="sd-btn" onclick="setDateToday('salesDate',loadSalesData)">Today</button>
+    </div>
     <div style="text-align:center;margin-bottom:8px">
       <div class="period-badge" id="periodBadge">☀️ Morning</div>
     </div>
-
     <div class="counter-grid">
       <div class="counter-col">
-        <div class="counter-btn quarter" onclick="tapSale('0.25L')">
-          <div class="cb-icon">🥛</div>
-          <div class="cb-label">¼ L</div>
-          <div class="cb-sub">Tap to count</div>
-        </div>
-        <div class="price-override">
-          <input type="number" id="priceOverride_q" step="1" inputmode="decimal" onfocus="this.select()">
-        </div>
+        <div class="counter-btn quarter" onclick="tapSale('0.25L')"><div class="cb-icon">🥛</div><div class="cb-label">¼ L</div><div class="cb-sub">Tap to count</div></div>
+        <div class="price-override"><input type="number" id="priceOverride_q" step="1" inputmode="decimal" onfocus="this.select()"></div>
       </div>
       <div class="counter-col">
-        <div class="counter-btn half" onclick="tapSale('0.5L')">
-          <div class="cb-icon">🥛</div>
-          <div class="cb-label">½ L</div>
-          <div class="cb-sub">Tap to count</div>
-        </div>
-        <div class="price-override">
-          <input type="number" id="priceOverride_h" step="1" inputmode="decimal" onfocus="this.select()">
-        </div>
+        <div class="counter-btn half" onclick="tapSale('0.5L')"><div class="cb-icon">🥛</div><div class="cb-label">½ L</div><div class="cb-sub">Tap to count</div></div>
+        <div class="price-override"><input type="number" id="priceOverride_h" step="1" inputmode="decimal" onfocus="this.select()"></div>
       </div>
       <div class="counter-col">
-        <div class="counter-btn full" onclick="tapSale('1L')">
-          <div class="cb-icon">🧴</div>
-          <div class="cb-label">1 L</div>
-          <div class="cb-sub">Tap to count</div>
-        </div>
-        <div class="price-override">
-          <input type="number" id="priceOverride_f" step="1" inputmode="decimal" onfocus="this.select()">
-        </div>
+        <div class="counter-btn full" onclick="tapSale('1L')"><div class="cb-icon">🧴</div><div class="cb-label">1 L</div><div class="cb-sub">Tap to count</div></div>
+        <div class="price-override"><input type="number" id="priceOverride_f" step="1" inputmode="decimal" onfocus="this.select()"></div>
       </div>
     </div>
-
     <div class="litres-bar">
       <div class="lv-amount"><span id="totalLitresSold">0</span> L</div>
       <div class="lv-label">Total Litres Sold</div>
     </div>
-
     <div class="sales-stats">
       <div class="stat-card q-stat">
-        <div class="stat-total q-color" id="qTotal">0</div>
-        <div class="stat-label">¼ Litre</div>
-        <div class="stat-breakdown">
-          <span>☀️ <strong id="qAM">0</strong></span>
-          <span>🌙 <strong id="qPM">0</strong></span>
-        </div>
+        <div class="stat-total q-color" id="qTotal">0</div><div class="stat-label">¼ Litre</div>
+        <div class="stat-breakdown"><span>☀️ <strong id="qAM">0</strong></span><span>🌙 <strong id="qPM">0</strong></span></div>
         <div class="stat-time" id="qLast">—</div>
       </div>
       <div class="stat-card h-stat">
-        <div class="stat-total h-color" id="hTotal">0</div>
-        <div class="stat-label">½ Litre</div>
-        <div class="stat-breakdown">
-          <span>☀️ <strong id="hAM">0</strong></span>
-          <span>🌙 <strong id="hPM">0</strong></span>
-        </div>
+        <div class="stat-total h-color" id="hTotal">0</div><div class="stat-label">½ Litre</div>
+        <div class="stat-breakdown"><span>☀️ <strong id="hAM">0</strong></span><span>🌙 <strong id="hPM">0</strong></span></div>
         <div class="stat-time" id="hLast">—</div>
       </div>
       <div class="stat-card f-stat">
-        <div class="stat-total f-color" id="fTotal">0</div>
-        <div class="stat-label">1 Litre</div>
-        <div class="stat-breakdown">
-          <span>☀️ <strong id="fAM">0</strong></span>
-          <span>🌙 <strong id="fPM">0</strong></span>
-        </div>
+        <div class="stat-total f-color" id="fTotal">0</div><div class="stat-label">1 Litre</div>
+        <div class="stat-breakdown"><span>☀️ <strong id="fAM">0</strong></span><span>🌙 <strong id="fPM">0</strong></span></div>
         <div class="stat-time" id="fLast">—</div>
       </div>
     </div>
-
     <div class="undo-row">
       <button class="btn-undo" onclick="undoSale('0.25L')">↩ ¼L</button>
       <button class="btn-undo" onclick="undoSale('0.5L')">↩ ½L</button>
@@ -270,6 +228,10 @@
 
   <!-- ════ UPI (hidden) ════ -->
   <div class="tab-content" id="tab-upi">
+    <div class="section-date">
+      <input type="date" id="upiDate" onchange="loadUpiData()">
+      <button class="sd-btn" onclick="setDateToday('upiDate',loadUpiData)">Today</button>
+    </div>
     <div class="card">
       <div class="card-title">UPI / PhonePe Sale</div>
       <div class="form-group"><label>Customer</label><input type="text" id="upiCustomer" placeholder="Optional"></div>
@@ -282,6 +244,10 @@
 
   <!-- ════ CASH (hidden) ════ -->
   <div class="tab-content" id="tab-cash">
+    <div class="section-date">
+      <input type="date" id="cashDate" onchange="loadCashData()">
+      <button class="sd-btn" onclick="setDateToday('cashDate',loadCashData)">Today</button>
+    </div>
     <div class="card">
       <div class="card-title">Cash Sale</div>
       <div class="form-group"><label>Customer</label><input type="text" id="cashCustomer" placeholder="Optional"></div>
@@ -294,15 +260,12 @@
 
   <!-- ════ EXPENSES ════ -->
   <div class="tab-content" id="tab-expenses">
+    <div class="section-date">
+      <input type="date" id="expenseDate" onchange="loadExpenseData()">
+      <button class="sd-btn" onclick="setDateToday('expenseDate',loadExpenseData)">Today</button>
+    </div>
     <div class="card">
       <div class="card-title">Record Expense</div>
-      <div class="form-group">
-        <label>Date</label>
-        <div style="display:flex;gap:8px;align-items:center">
-          <input type="date" id="expenseDate" style="flex:1;font-size:14px;font-weight:600" onchange="loadExpenseDate()">
-          <button class="btn-sm" onclick="setExpenseToday()" style="padding:8px 12px">Today</button>
-        </div>
-      </div>
       <div class="form-group"><label>Category</label>
         <div class="chip-group" id="expenseChips">
           <div class="chip active" data-value="1L Cover" onclick="selectChip(this)">1L Cover</div>
@@ -332,22 +295,16 @@
       </div>
       <div style="margin-top:10px;font-size:13px"><span class="status-dot" id="statusDot"></span><span id="statusText">Not connected</span></div>
     </div>
-
     <div class="card">
       <div class="card-title">Suppliers</div>
       <div id="supplierTags"></div>
       <div class="add-supplier-row"><input type="text" id="newSupplierName" placeholder="New supplier"><button class="btn-sm" onclick="addSupplier()">Add</button></div>
     </div>
-
     <div class="card">
       <div class="card-title">Default Purchase Price</div>
-      <div class="form-group">
-        <label>₹ per Litre (buy price)</label>
-        <input type="number" id="defaultBuyPrice" placeholder="e.g. 48" step="1" inputmode="decimal" onchange="saveSetting()">
-      </div>
+      <div class="form-group"><label>₹ per Litre (buy price)</label><input type="number" id="defaultBuyPrice" placeholder="e.g. 48" step="1" inputmode="decimal" onchange="saveSetting()"></div>
       <p style="font-size:12px;color:var(--text-secondary)">Used when price is not entered per supplier</p>
     </div>
-
     <div class="card">
       <div class="card-title">Selling Prices</div>
       <div class="form-row-3">
@@ -355,18 +312,12 @@
         <div class="form-group"><label>½ L (₹)</label><input type="number" id="sellPriceH" placeholder="e.g. 30" step="1" inputmode="decimal" onchange="saveSetting()"></div>
         <div class="form-group"><label>1 L (₹)</label><input type="number" id="sellPriceF" placeholder="e.g. 56" step="1" inputmode="decimal" onchange="saveSetting()"></div>
       </div>
-      <p style="font-size:12px;color:var(--text-secondary)">Default prices when the override field below buttons is left blank</p>
     </div>
-
     <div class="card">
       <div class="card-title">Period Cutoff</div>
-      <div class="form-group">
-        <label>Morning/Evening cutoff hour (24h)</label>
-        <input type="number" id="cutoffHour" placeholder="12" min="0" max="23" step="1" inputmode="numeric" onchange="saveSetting()">
-      </div>
-      <p style="font-size:12px;color:var(--text-secondary)">Sales before this hour = Morning. Default: 12</p>
+      <div class="form-group"><label>Morning/Evening cutoff hour (24h)</label><input type="number" id="cutoffHour" placeholder="12" min="0" max="23" step="1" inputmode="numeric" onchange="saveSetting()"></div>
+      <p style="font-size:12px;color:var(--text-secondary)">Before this hour = Morning</p>
     </div>
-
     <div class="card">
       <div class="card-title">Optional Tabs</div>
       <div class="toggle-row">
@@ -374,16 +325,15 @@
         <button class="toggle" id="toggleSaleTabs" onclick="toggleSaleTabs()"></button>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title">Actions</div>
       <button class="btn btn-primary" onclick="testConnection()" style="margin-bottom:8px">Test Connection</button>
-      <button class="btn btn-primary" onclick="loadDateData()" style="background:var(--success)">↻ Reload Data</button>
+      <button class="btn btn-primary" onclick="reloadAll()" style="background:var(--success)">↻ Reload All Data</button>
     </div>
   </div>
 </div>
 
-<div class="bottom-nav" id="bottomNav">
+<div class="bottom-nav">
   <button class="nav-tab active" data-tab="purchases" onclick="switchTab('purchases',this)"><span class="nav-icon">🥛</span>Purchase</button>
   <button class="nav-tab" data-tab="sales" onclick="switchTab('sales',this)"><span class="nav-icon">🛒</span>Sales</button>
   <button class="nav-tab hidden" data-tab="upi" onclick="switchTab('upi',this)"><span class="nav-icon">📱</span>UPI</button>
@@ -394,25 +344,28 @@
 
 <script>
 const DEFAULT_SUPPLIERS=['SPK','Subramani','Miniraj','Miy','Gobi','Venkatesh','Sudhakar','Avalapalli'];
-const LS={
-  scriptUrl:'hm_url', suppliers:'hm_sup',
-  buyPrice:'hm_bp', sellQ:'hm_sq', sellH:'hm_sh', sellF:'hm_sf',
-  cutoff:'hm_cut', showSaleTabs:'hm_st'
-};
+const LS={scriptUrl:'hm_url',suppliers:'hm_sup',buyPrice:'hm_bp',sellQ:'hm_sq',sellH:'hm_sh',sellF:'hm_sf',cutoff:'hm_cut',showSaleTabs:'hm_st'};
 
 let suppliers=JSON.parse(localStorage.getItem(LS.suppliers))||[...DEFAULT_SUPPLIERS];
 let scriptUrl=localStorage.getItem(LS.scriptUrl)||'';
 let cfg={
-  buyPrice: parseFloat(localStorage.getItem(LS.buyPrice))||0,
-  sellQ: parseFloat(localStorage.getItem(LS.sellQ))||0,
-  sellH: parseFloat(localStorage.getItem(LS.sellH))||0,
-  sellF: parseFloat(localStorage.getItem(LS.sellF))||0,
-  cutoff: parseInt(localStorage.getItem(LS.cutoff))||12,
-  showSaleTabs: localStorage.getItem(LS.showSaleTabs)==='true'
+  buyPrice:parseFloat(localStorage.getItem(LS.buyPrice))||0,
+  sellQ:parseFloat(localStorage.getItem(LS.sellQ))||0,
+  sellH:parseFloat(localStorage.getItem(LS.sellH))||0,
+  sellF:parseFloat(localStorage.getItem(LS.sellF))||0,
+  cutoff:parseInt(localStorage.getItem(LS.cutoff))||12,
+  showSaleTabs:localStorage.getItem(LS.showSaleTabs)==='true'
 };
 
+// ══════════════════════════════
+//  INIT
+// ══════════════════════════════
 function init(){
-  setToday(); renderSupplierGrid(); renderSupplierTags(); updateConnectionStatus();
+  // Set all dates to today
+  const today=fmtDate(new Date());
+  ['purchaseDate','salesDate','upiDate','cashDate','expenseDate'].forEach(id=>document.getElementById(id).value=today);
+
+  renderSupplierGrid(); renderSupplierTags(); updateConnectionStatus();
   document.getElementById('scriptUrl').value=scriptUrl;
   document.getElementById('defaultBuyPrice').value=cfg.buyPrice||'';
   document.getElementById('sellPriceQ').value=cfg.sellQ||'';
@@ -421,23 +374,26 @@ function init(){
   document.getElementById('cutoffHour').value=cfg.cutoff;
   updatePriceOverridePlaceholders();
   applySaleTabToggle(); updatePeriodBadge();
-  document.getElementById('expenseDate').value=fmtDate(new Date());
-  loadDateData();
+
+  // Load all sections
+  reloadAll();
 }
 
-function setToday(){const d=new Date();document.getElementById('entryDate').value=fmtDate(d)}
 function fmtDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function getDate(){return document.getElementById('entryDate').value}
-function onDateChange(){loadDateData()}
+function setDateToday(inputId,loadFn){document.getElementById(inputId).value=fmtDate(new Date());loadFn()}
 function getCurrentPeriod(){return new Date().getHours()<cfg.cutoff?'Morning':'Evening'}
 function getCurrentTime(){const d=new Date();let h=d.getHours(),m=d.getMinutes();const a=h>=12?'PM':'AM';h=h%12||12;return h+':'+String(m).padStart(2,'0')+' '+a}
 function updatePeriodBadge(){const p=getCurrentPeriod();const el=document.getElementById('periodBadge');el.textContent=(p==='Morning'?'☀️ ':'🌙 ')+p;el.className='period-badge '+p.toLowerCase()}
-function getDateLabel(){const d=getDate();if(!d)return'';if(d===fmtDate(new Date()))return"Today's";return new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short'})+"'s"}
-
 function updatePriceOverridePlaceholders(){
   document.getElementById('priceOverride_q').placeholder='₹'+(cfg.sellQ||'?');
   document.getElementById('priceOverride_h').placeholder='₹'+(cfg.sellH||'?');
   document.getElementById('priceOverride_f').placeholder='₹'+(cfg.sellF||'?');
+}
+
+function dateLabelFor(inputId){
+  const d=document.getElementById(inputId).value;if(!d)return'';
+  if(d===fmtDate(new Date()))return"Today's";
+  return new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short'})+"'s";
 }
 
 function switchTab(id,btn){
@@ -446,136 +402,148 @@ function switchTab(id,btn){
   document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');
 }
 
+function reloadAll(){loadPurchaseData();loadSalesData();loadUpiData();loadCashData();loadExpenseData()}
+
 // ══════════════════════════════
-//  DATA LOADING
+//  SECTION DATA LOADERS
 // ══════════════════════════════
-async function loadDateData(){
-  const date=getDate();if(!date||!scriptUrl){clearAll();return}
-  setLoading(true);
+async function fetchDateData(date){
+  if(!date||!scriptUrl) return null;
   try{
     const res=await fetch(scriptUrl+'?action=getByDate&date='+encodeURIComponent(date),{redirect:'follow'});
     const j=await res.json();
-    if(j.status==='success'){
-      populatePurchases(j.data.purchases||[]);
-      populateSales(j.data.sales||[]);
-      popHistory('upi',j.data.upi_sales||[],'upiHistory','upiHistoryTitle');
-      popHistory('cash',j.data.cash_sales||[],'cashHistory','cashHistoryTitle');
-      loadExpenseDate();
-    }else clearAll();
-  }catch(e){console.warn(e);clearAll()}
+    return j.status==='success'?j.data:null;
+  }catch(e){console.warn('Fetch error:',e);return null}
+}
+
+async function loadPurchaseData(){
+  const date=document.getElementById('purchaseDate').value;
+  setLoading(true);
+  const data=await fetchDateData(date);
+  if(data) populatePurchases(data.purchases||[]);
+  else clearPurchases();
   setLoading(false);
 }
 
-function clearAll(){
-  document.querySelectorAll('#supplierGrid input').forEach(i=>{i.value='';i.classList.remove('has-data')});
-  updatePurchaseTotals();
-  document.getElementById('purchaseSavedBadge').innerHTML='';
-  resetSalesUI();
-  ['upiHistory','cashHistory'].forEach(id=>document.getElementById(id).innerHTML='<div class="history-empty">No entries</div>');
-  updateHistoryTitles();
+async function loadSalesData(){
+  const date=document.getElementById('salesDate').value;
+  setLoading(true);
+  const data=await fetchDateData(date);
+  if(data) populateSales(data.sales||[]);
+  else resetSalesUI();
+  setLoading(false);
 }
 
-// ── Purchases ──
+async function loadUpiData(){
+  const date=document.getElementById('upiDate').value;
+  const data=await fetchDateData(date);
+  const label=dateLabelFor('upiDate');
+  document.getElementById('upiHistoryTitle').textContent=label+' UPI Sales';
+  if(data) popHistory(data.upi_sales||[],'upiHistory');
+  else document.getElementById('upiHistory').innerHTML='<div class="history-empty">No entries</div>';
+}
+
+async function loadCashData(){
+  const date=document.getElementById('cashDate').value;
+  const data=await fetchDateData(date);
+  const label=dateLabelFor('cashDate');
+  document.getElementById('cashHistoryTitle').textContent=label+' Cash Sales';
+  if(data) popHistory(data.cash_sales||[],'cashHistory');
+  else document.getElementById('cashHistory').innerHTML='<div class="history-empty">No entries</div>';
+}
+
+async function loadExpenseData(){
+  const date=document.getElementById('expenseDate').value;
+  const label=dateLabelFor('expenseDate');
+  document.getElementById('expenseHistoryTitle').textContent=label+' Expenses';
+  const data=await fetchDateData(date);
+  if(data) popExpenseHistory(data.expenses||[]);
+  else document.getElementById('expenseHistory').innerHTML='<div class="history-empty">No entries</div>';
+}
+
+// ══════════════════════════════
+//  POPULATE UI
+// ══════════════════════════════
 function renderSupplierGrid(){
-  const defPrice=cfg.buyPrice;
+  const dp=cfg.buyPrice;
   document.getElementById('supplierGrid').innerHTML=suppliers.map(name=>`
-    <div class="purchase-card">
-      <div class="purchase-header">${name}</div>
+    <div class="purchase-card"><div class="purchase-header">${name}</div>
       <div class="purchase-cols">
-        <div>
-          <div class="purchase-col-label">☀️ Morning</div>
+        <div><div class="purchase-col-label">☀️ Morning</div>
           <div class="purchase-pair">
-            <div><input type="number" step="0.25" inputmode="decimal" placeholder="L"
-              data-s="${name}" data-f="morn_l" onfocus="this.select()" oninput="updatePurchaseTotals()">
-              <div class="pi-label">Litres</div></div>
-            <div><input type="number" step="1" inputmode="decimal" placeholder="${defPrice?'₹'+defPrice:'₹/L'}"
-              data-s="${name}" data-f="morn_p" onfocus="this.select()" oninput="updatePurchaseTotals()">
-              <div class="pi-label">₹/Litre</div></div>
-          </div>
-        </div>
-        <div>
-          <div class="purchase-col-label">🌙 Evening</div>
+            <div><input type="number" step="0.25" inputmode="decimal" placeholder="L" data-s="${name}" data-f="morn_l" onfocus="this.select()" oninput="updatePurchaseTotals()"><div class="pi-label">Litres</div></div>
+            <div><input type="number" step="1" inputmode="decimal" placeholder="${dp?'₹'+dp:'₹/L'}" data-s="${name}" data-f="morn_p" onfocus="this.select()" oninput="updatePurchaseTotals()"><div class="pi-label">₹/Litre</div></div>
+          </div></div>
+        <div><div class="purchase-col-label">🌙 Evening</div>
           <div class="purchase-pair">
-            <div><input type="number" step="0.25" inputmode="decimal" placeholder="L"
-              data-s="${name}" data-f="eve_l" onfocus="this.select()" oninput="updatePurchaseTotals()">
-              <div class="pi-label">Litres</div></div>
-            <div><input type="number" step="1" inputmode="decimal" placeholder="${defPrice?'₹'+defPrice:'₹/L'}"
-              data-s="${name}" data-f="eve_p" onfocus="this.select()" oninput="updatePurchaseTotals()">
-              <div class="pi-label">₹/Litre</div></div>
-          </div>
-        </div>
-      </div>
-    </div>`).join('');
+            <div><input type="number" step="0.25" inputmode="decimal" placeholder="L" data-s="${name}" data-f="eve_l" onfocus="this.select()" oninput="updatePurchaseTotals()"><div class="pi-label">Litres</div></div>
+            <div><input type="number" step="1" inputmode="decimal" placeholder="${dp?'₹'+dp:'₹/L'}" data-s="${name}" data-f="eve_p" onfocus="this.select()" oninput="updatePurchaseTotals()"><div class="pi-label">₹/Litre</div></div>
+          </div></div>
+      </div></div>`).join('');
 }
 
 function updatePurchaseTotals(){
-  let totalL=0,totalC=0;
+  let tL=0,tC=0;
   suppliers.forEach(n=>{
     const ml=pv(n,'morn_l'),mp=pv(n,'morn_p')||cfg.buyPrice,el=pv(n,'eve_l'),ep=pv(n,'eve_p')||cfg.buyPrice;
-    totalL+=ml+el; totalC+=(ml*mp)+(el*ep);
+    tL+=ml+el;tC+=(ml*mp)+(el*ep);
   });
-  document.getElementById('purchaseTotal').textContent=totalL%1===0?totalL:totalL.toFixed(2);
-  document.getElementById('purchaseCost').textContent=Math.round(totalC);
+  document.getElementById('purchaseTotal').textContent=tL%1===0?tL:tL.toFixed(2);
+  document.getElementById('purchaseCost').textContent=Math.round(tC);
 }
-function pv(supplier,field){return parseFloat(document.querySelector(`input[data-s="${supplier}"][data-f="${field}"]`)?.value)||0}
+function pv(s,f){return parseFloat(document.querySelector(`input[data-s="${s}"][data-f="${f}"]`)?.value)||0}
+
+function clearPurchases(){
+  document.querySelectorAll('#supplierGrid input').forEach(i=>{i.value='';i.classList.remove('has-data')});
+  updatePurchaseTotals();document.getElementById('purchaseSavedBadge').innerHTML='';
+}
 
 function populatePurchases(rows){
-  document.querySelectorAll('#supplierGrid input').forEach(i=>{i.value='';i.classList.remove('has-data')});
-  let has=false;
+  clearPurchases();let has=false;
   rows.forEach(r=>{
     const s=r.Supplier;
-    const fields={morn_l:r['Morning (L)'],morn_p:r['Morning (₹/L)'],eve_l:r['Evening (L)'],eve_p:r['Evening (₹/L)']};
-    Object.entries(fields).forEach(([f,v])=>{
-      if(v){const el=document.querySelector(`input[data-s="${s}"][data-f="${f}"]`);if(el){el.value=v;el.classList.add('has-data');has=true;}}
-    });
+    const map={morn_l:r['Morning (L)'],morn_p:r['Morning (₹/L)'],eve_l:r['Evening (L)'],eve_p:r['Evening (₹/L)']};
+    Object.entries(map).forEach(([f,v])=>{if(v){const el=document.querySelector(`input[data-s="${s}"][data-f="${f}"]`);if(el){el.value=v;el.classList.add('has-data');has=true;}}});
   });
   updatePurchaseTotals();
   document.getElementById('purchaseSavedBadge').innerHTML=has?'<span class="saved-badge">✓ Saved</span>':'';
 }
 
-// ── Sales Counter ──
 function populateSales(rows){
-  let c={qm:0,qe:0,hm:0,he:0,fm:0,fe:0,qr:0,hr:0,fr:0,lq:'',lh:'',lf:''};
+  let c={qm:0,qe:0,hm:0,he:0,fm:0,fe:0,lq:'',lh:'',lf:''};
   rows.forEach(r=>{
-    const item=String(r.Item),period=String(r.Period),time=r.Time||'',price=parseFloat(r['Price (₹)'])||0;
-    if(item==='0.25L'){if(period==='Morning')c.qm++;else c.qe++;c.qr+=price;c.lq=time;}
-    else if(item==='0.5L'){if(period==='Morning')c.hm++;else c.he++;c.hr+=price;c.lh=time;}
-    else if(item==='1L'){if(period==='Morning')c.fm++;else c.fe++;c.fr+=price;c.lf=time;}
+    const item=String(r.Item),period=String(r.Period),time=r.Time||'';
+    if(item==='0.25L'){if(period==='Morning')c.qm++;else c.qe++;c.lq=time;}
+    else if(item==='0.5L'){if(period==='Morning')c.hm++;else c.he++;c.lh=time;}
+    else if(item==='1L'){if(period==='Morning')c.fm++;else c.fe++;c.lf=time;}
   });
   setSalesUI(c);
 }
 
 function setSalesUI(c){
   const qt=c.qm+c.qe,ht=c.hm+c.he,ft=c.fm+c.fe;
-  document.getElementById('qTotal').textContent=qt;
-  document.getElementById('qAM').textContent=c.qm;document.getElementById('qPM').textContent=c.qe;
-  document.getElementById('qLast').textContent=c.lq?'Last: '+c.lq:'—';
-  document.getElementById('hTotal').textContent=ht;
-  document.getElementById('hAM').textContent=c.hm;document.getElementById('hPM').textContent=c.he;
-  document.getElementById('hLast').textContent=c.lh?'Last: '+c.lh:'—';
-  document.getElementById('fTotal').textContent=ft;
-  document.getElementById('fAM').textContent=c.fm;document.getElementById('fPM').textContent=c.fe;
-  document.getElementById('fLast').textContent=c.lf?'Last: '+c.lf:'—';
+  document.getElementById('qTotal').textContent=qt;document.getElementById('qAM').textContent=c.qm;document.getElementById('qPM').textContent=c.qe;document.getElementById('qLast').textContent=c.lq?'Last: '+c.lq:'—';
+  document.getElementById('hTotal').textContent=ht;document.getElementById('hAM').textContent=c.hm;document.getElementById('hPM').textContent=c.he;document.getElementById('hLast').textContent=c.lh?'Last: '+c.lh:'—';
+  document.getElementById('fTotal').textContent=ft;document.getElementById('fAM').textContent=c.fm;document.getElementById('fPM').textContent=c.fe;document.getElementById('fLast').textContent=c.lf?'Last: '+c.lf:'—';
   const totalL=(qt*0.25)+(ht*0.5)+(ft*1);
   document.getElementById('totalLitresSold').textContent=totalL%1===0?totalL:totalL.toFixed(2);
-  document.getElementById('totalRevenue').textContent=Math.round(c.qr+c.hr+c.fr);
 }
-function resetSalesUI(){setSalesUI({qm:0,qe:0,hm:0,he:0,fm:0,fe:0,qr:0,hr:0,fr:0,lq:'',lh:'',lf:''})}
+function resetSalesUI(){setSalesUI({qm:0,qe:0,hm:0,he:0,fm:0,fe:0,lq:'',lh:'',lf:''})}
 
-// History
-function popHistory(type,rows,cId,tId){
-  const el=document.getElementById(cId);updateHistoryTitles();
+function popHistory(rows,cId){
+  const el=document.getElementById(cId);
   if(!rows.length){el.innerHTML='<div class="history-empty">No entries</div>';return}
   let ta=0,tl=0,html='';
-  rows.forEach(r=>{const c=r.Customer||'—',l=r.Litres||0,a=r['Amount (₹)']||0,n=type==='upi'?(r['UPI Ref']||''):(r.Note||'');
+  rows.forEach(r=>{const c=r.Customer||'—',l=r.Litres||0,a=r['Amount (₹)']||0,n=r['UPI Ref']||r.Note||'';
     ta+=parseFloat(a)||0;tl+=parseFloat(l)||0;
     html+=`<div class="history-card"><div class="history-left"><div class="history-name">${c}</div><div class="history-detail">${l?l+' L':''}${n?' · '+n:''}</div></div><div class="history-amount" style="color:var(--success)">₹${a}</div></div>`;
   });
   html+=`<div style="display:flex;justify-content:space-between;padding:10px 4px 0;font-size:13px;font-weight:700"><span style="color:var(--text-secondary)">${rows.length} · ${tl} L</span><span style="color:var(--success)">₹${ta}</span></div>`;
   el.innerHTML=html;
 }
+
 function popExpenseHistory(rows){
-  const el=document.getElementById('expenseHistory');updateHistoryTitles();
+  const el=document.getElementById('expenseHistory');
   if(!rows.length){el.innerHTML='<div class="history-empty">No expenses</div>';return}
   let t=0,html='';
   rows.forEach(r=>{const c=r.Category||'—',a=r['Amount (₹)']||0,q=r.Quantity||'',n=r.Note||'';t+=parseFloat(a)||0;
@@ -584,38 +552,28 @@ function popExpenseHistory(rows){
   html+=`<div style="text-align:right;padding:10px 4px 0;font-size:13px;font-weight:700;color:var(--danger)">Total: ₹${t}</div>`;
   el.innerHTML=html;
 }
-function updateHistoryTitles(){const l=getDateLabel();
-  document.getElementById('upiHistoryTitle').textContent=l+' UPI Sales';
-  document.getElementById('cashHistoryTitle').textContent=l+' Cash Sales';
-  document.getElementById('expenseHistoryTitle').textContent=l+' Expenses';
-}
 
 // ══════════════════════════════
 //  SALES TAP & UNDO
 // ══════════════════════════════
 async function tapSale(item){
-  const date=getDate();if(!date){showToast('Select date','error');return}
+  const date=document.getElementById('salesDate').value;
+  if(!date){showToast('Select date','error');return}
   if(!scriptUrl){showToast('Set up connection first','error');return}
 
-  // Resolve price: override → default → 0
   let price=0;
-  const ovId = item==='0.25L'?'priceOverride_q':item==='0.5L'?'priceOverride_h':'priceOverride_f';
-  const override=parseFloat(document.getElementById(ovId).value);
-  if(override>0) price=override;
-  else if(item==='0.25L') price=cfg.sellQ;
-  else if(item==='0.5L') price=cfg.sellH;
-  else price=cfg.sellF;
+  const ovId=item==='0.25L'?'priceOverride_q':item==='0.5L'?'priceOverride_h':'priceOverride_f';
+  const ov=parseFloat(document.getElementById(ovId).value);
+  if(ov>0)price=ov;else if(item==='0.25L')price=cfg.sellQ;else if(item==='0.5L')price=cfg.sellH;else price=cfg.sellF;
 
-  const period=getCurrentPeriod(), time=getCurrentTime();
-
-  // Optimistic UI
+  const period=getCurrentPeriod(),time=getCurrentTime();
   const pfx=item==='0.25L'?'q':item==='0.5L'?'h':'f';
-  const totalEl=document.getElementById(pfx+'Total');
-  const perEl=document.getElementById(pfx+(period==='Morning'?'AM':'PM'));
-  totalEl.textContent=parseInt(totalEl.textContent)+1;
-  perEl.textContent=parseInt(perEl.textContent)+1;
+
+  // Optimistic
+  const tEl=document.getElementById(pfx+'Total'),pEl=document.getElementById(pfx+(period==='Morning'?'AM':'PM'));
+  tEl.textContent=parseInt(tEl.textContent)+1;pEl.textContent=parseInt(pEl.textContent)+1;
   document.getElementById(pfx+'Last').textContent='Last: '+time;
-  recalcTotals();
+  recalcLitres();
 
   try{
     const res=await fetch(scriptUrl,{method:'POST',body:JSON.stringify({action:'sale_tap',date,item,price,period,time}),headers:{'Content-Type':'text/plain'},redirect:'follow'});
@@ -628,9 +586,10 @@ async function undoSale(item){
   if(!scriptUrl){showToast('Set up connection','error');return}
   const pfx=item==='0.25L'?'q':item==='0.5L'?'h':'f';
   if(parseInt(document.getElementById(pfx+'Total').textContent)<=0){showToast('Nothing to undo','error');return}
+  const date=document.getElementById('salesDate').value;
   setLoading(true);
   try{
-    const res=await fetch(scriptUrl,{method:'POST',body:JSON.stringify({action:'sale_undo',date:getDate(),item}),headers:{'Content-Type':'text/plain'},redirect:'follow'});
+    const res=await fetch(scriptUrl,{method:'POST',body:JSON.stringify({action:'sale_undo',date,item}),headers:{'Content-Type':'text/plain'},redirect:'follow'});
     const j=await res.json();
     if(j.status==='success'&&j.counts){syncCounts(j.counts);showToast('↩ Undone','info')}
     else showToast(j.message||'Failed','error');
@@ -638,83 +597,53 @@ async function undoSale(item){
   setLoading(false);
 }
 
-function syncCounts(c){
-  setSalesUI({
-    qm:c.q_morning,qe:c.q_evening,hm:c.h_morning,he:c.h_evening,fm:c.f_morning,fe:c.f_evening,
-    qr:c.q_revenue||0,hr:c.h_revenue||0,fr:c.f_revenue||0,
-    lq:c.last_q||'',lh:c.last_h||'',lf:c.last_f||''
-  });
-}
-function recalcTotals(){
+function syncCounts(c){setSalesUI({qm:c.q_morning,qe:c.q_evening,hm:c.h_morning,he:c.h_evening,fm:c.f_morning,fe:c.f_evening,lq:c.last_q||'',lh:c.last_h||'',lf:c.last_f||''})}
+
+function recalcLitres(){
   const qt=parseInt(document.getElementById('qTotal').textContent)||0;
   const ht=parseInt(document.getElementById('hTotal').textContent)||0;
   const ft=parseInt(document.getElementById('fTotal').textContent)||0;
-  const totalL=(qt*0.25)+(ht*0.5)+(ft*1);
-  document.getElementById('totalLitresSold').textContent=totalL%1===0?totalL:totalL.toFixed(2);
+  const tl=(qt*0.25)+(ht*0.5)+(ft*1);
+  document.getElementById('totalLitresSold').textContent=tl%1===0?tl:tl.toFixed(2);
 }
 
 // ══════════════════════════════
 //  SAVE FUNCTIONS
 // ══════════════════════════════
 async function savePurchases(){
-  const date=getDate();if(!date){showToast('Select date','error');return}
+  const date=document.getElementById('purchaseDate').value;if(!date){showToast('Select date','error');return}
   const rows=[];
   suppliers.forEach(n=>{
-    const ml=pv(n,'morn_l'),mp=pv(n,'morn_p')||cfg.buyPrice;
-    const el=pv(n,'eve_l'),ep=pv(n,'eve_p')||cfg.buyPrice;
-    if(ml>0||el>0){
-      const totalL=ml+el, totalC=(ml*mp)+(el*ep);
-      rows.push([date,n,ml,mp,el,ep,totalL,Math.round(totalC)]);
-    }
+    const ml=pv(n,'morn_l'),mp=pv(n,'morn_p')||cfg.buyPrice,el=pv(n,'eve_l'),ep=pv(n,'eve_p')||cfg.buyPrice;
+    if(ml>0||el>0)rows.push([date,n,ml,mp,el,ep,ml+el,Math.round((ml*mp)+(el*ep))]);
   });
   if(!rows.length){showToast('No entries','error');return}
   const btn=document.getElementById('btnSavePurchases');btn.disabled=true;btn.innerHTML='Saving…';
   const ok=await sendToSheet({action:'purchases',date,rows});
   btn.disabled=false;btn.innerHTML='Save Purchases';
-  if(ok){showToast(`✓ ${rows.length} entries saved`,'success');await loadDateData()}
+  if(ok){showToast(`✓ ${rows.length} saved`,'success');await loadPurchaseData()}
 }
 
 async function saveUpiSale(){
-  const date=getDate(),a=parseFloat(document.getElementById('upiAmount').value)||0;
+  const date=document.getElementById('upiDate').value,a=parseFloat(document.getElementById('upiAmount').value)||0;
   if(a<=0){showToast('Enter amount','error');return}
   const ok=await sendToSheet({action:'upi_sale',row:[date,document.getElementById('upiCustomer').value.trim()||'—',parseFloat(document.getElementById('upiLitres').value)||0,a,document.getElementById('upiRef').value.trim()]});
-  if(ok){showToast('✓ Saved','success');['upiCustomer','upiLitres','upiAmount','upiRef'].forEach(id=>document.getElementById(id).value='');await loadDateData()}
+  if(ok){showToast('✓ Saved','success');['upiCustomer','upiLitres','upiAmount','upiRef'].forEach(id=>document.getElementById(id).value='');await loadUpiData()}
 }
 
 async function saveCashSale(){
-  const date=getDate(),a=parseFloat(document.getElementById('cashAmount').value)||0;
+  const date=document.getElementById('cashDate').value,a=parseFloat(document.getElementById('cashAmount').value)||0;
   if(a<=0){showToast('Enter amount','error');return}
   const ok=await sendToSheet({action:'cash_sale',row:[date,document.getElementById('cashCustomer').value.trim()||'—',parseFloat(document.getElementById('cashLitres').value)||0,a,document.getElementById('cashNote').value.trim()]});
-  if(ok){showToast('✓ Saved','success');['cashCustomer','cashLitres','cashAmount','cashNote'].forEach(id=>document.getElementById(id).value='');await loadDateData()}
+  if(ok){showToast('✓ Saved','success');['cashCustomer','cashLitres','cashAmount','cashNote'].forEach(id=>document.getElementById(id).value='');await loadCashData()}
 }
 
 async function saveExpense(){
-  const date=getExpenseDate();if(!date){showToast('Select date','error');return}
-  const a=parseFloat(document.getElementById('expenseAmount').value)||0;
+  const date=document.getElementById('expenseDate').value,a=parseFloat(document.getElementById('expenseAmount').value)||0;
   if(a<=0){showToast('Enter amount','error');return}
   const cat=document.querySelector('#expenseChips .chip.active')?.dataset.value||'Other';
   const ok=await sendToSheet({action:'expense',row:[date,cat,a,parseFloat(document.getElementById('expenseQty').value)||0,document.getElementById('expenseNote').value.trim()]});
-  if(ok){showToast(`✓ ₹${a} saved`,'success');['expenseAmount','expenseQty','expenseNote'].forEach(id=>document.getElementById(id).value='');loadExpenseDate()}
-}
-
-function getExpenseDate(){return document.getElementById('expenseDate').value}
-function setExpenseToday(){document.getElementById('expenseDate').value=fmtDate(new Date());loadExpenseDate()}
-function getExpenseDateLabel(){
-  const d=getExpenseDate();if(!d)return'';
-  if(d===fmtDate(new Date()))return"Today's";
-  return new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short'})+"'s";
-}
-
-async function loadExpenseDate(){
-  const date=getExpenseDate();
-  if(!date||!scriptUrl){document.getElementById('expenseHistory').innerHTML='<div class="history-empty">No entries</div>';return}
-  document.getElementById('expenseHistoryTitle').textContent=getExpenseDateLabel()+' Expenses';
-  try{
-    const res=await fetch(scriptUrl+'?action=getByDate&date='+encodeURIComponent(date),{redirect:'follow'});
-    const j=await res.json();
-    if(j.status==='success') popExpenseHistory(j.data.expenses||[]);
-    else document.getElementById('expenseHistory').innerHTML='<div class="history-empty">No entries</div>';
-  }catch(e){console.warn(e)}
+  if(ok){showToast(`✓ ₹${a} saved`,'success');['expenseAmount','expenseQty','expenseNote'].forEach(id=>document.getElementById(id).value='');await loadExpenseData()}
 }
 
 async function sendToSheet(data){
@@ -728,7 +657,7 @@ async function sendToSheet(data){
 async function testConnection(){
   if(!scriptUrl){showToast('Enter URL first','error');return}setLoading(true);
   try{const res=await fetch(scriptUrl+'?action=ping',{redirect:'follow'});const j=await res.json();setLoading(false);
-    if(j.status==='ok'){showToast('✓ Connected!','success');updateConnectionStatus(true);loadDateData()}else showToast('Unexpected','error');
+    if(j.status==='ok'){showToast('✓ Connected!','success');updateConnectionStatus(true);reloadAll()}else showToast('Unexpected','error');
   }catch(e){setLoading(false);showToast('Failed','error');updateConnectionStatus(false)}
 }
 
@@ -742,11 +671,8 @@ function saveSetting(){
   localStorage.setItem(LS.buyPrice,cfg.buyPrice);localStorage.setItem(LS.sellQ,cfg.sellQ);
   localStorage.setItem(LS.sellH,cfg.sellH);localStorage.setItem(LS.sellF,cfg.sellF);
   localStorage.setItem(LS.cutoff,cfg.cutoff);
-  updatePriceOverridePlaceholders();updatePeriodBadge();renderSupplierGrid();
-  // Reload to re-fill values
-  loadDateData();
+  updatePriceOverridePlaceholders();updatePeriodBadge();renderSupplierGrid();loadPurchaseData();
 }
-
 function saveScriptUrl(){scriptUrl=document.getElementById('scriptUrl').value.trim();localStorage.setItem(LS.scriptUrl,scriptUrl);showToast('Saved','success');updateConnectionStatus()}
 function updateConnectionStatus(c){
   const d=document.getElementById('statusDot'),t=document.getElementById('statusText'),has=!!scriptUrl;
@@ -763,7 +689,7 @@ function applySaleTabToggle(){
 function selectChip(el){el.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));el.classList.add('active')}
 
 function renderSupplierTags(){document.getElementById('supplierTags').innerHTML=suppliers.map((n,i)=>`<span class="supplier-tag">${n}<span class="remove" onclick="removeSupplier(${i})">×</span></span>`).join('')}
-function addSupplier(){const input=document.getElementById('newSupplierName'),n=input.value.trim();if(!n)return;if(suppliers.includes(n)){showToast('Exists','error');return}suppliers.push(n);localStorage.setItem(LS.suppliers,JSON.stringify(suppliers));input.value='';renderSupplierGrid();renderSupplierTags();showToast('Added '+n,'success');loadDateData()}
+function addSupplier(){const input=document.getElementById('newSupplierName'),n=input.value.trim();if(!n)return;if(suppliers.includes(n)){showToast('Exists','error');return}suppliers.push(n);localStorage.setItem(LS.suppliers,JSON.stringify(suppliers));input.value='';renderSupplierGrid();renderSupplierTags();showToast('Added '+n,'success');loadPurchaseData()}
 function removeSupplier(i){if(!confirm('Remove '+suppliers[i]+'?'))return;suppliers.splice(i,1);localStorage.setItem(LS.suppliers,JSON.stringify(suppliers));renderSupplierGrid();renderSupplierTags()}
 
 function showToast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500)}
