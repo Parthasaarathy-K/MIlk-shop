@@ -5,34 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="theme-color" content="#2563EB">
 <title>Hemnath Milk Shop</title>
 <style>
   :root {
-    --bg:#F1F3F5;--card:#FFFFFF;--primary:#2563EB;--primary-light:#DBEAFE;
-    --success:#16A34A;--success-light:#DCFCE7;--danger:#DC2626;--danger-light:#FEE2E2;
-    --text:#1E293B;--text-secondary:#64748B;--border:#E2E8F0;
-    --input-bg:#F8FAFC;--shadow:0 1px 3px rgba(0,0,0,0.08);--radius:12px;
-    --purple:#6366F1;--amber:#D97706;--teal:#0D9488;
+    --bg:#F1F3F5; --card:#FFFFFF; --primary:#2563EB; --primary-light:#DBEAFE;
+    --success:#16A34A; --success-light:#DCFCE7; --danger:#DC2626; --danger-light:#FEE2E2;
+    --warn:#F59E0B; --warn-light:#FEF3C7;
+    --text:#1E293B; --text-secondary:#64748B; --border:#E2E8F0;
+    --input-bg:#F8FAFC; --shadow:0 1px 3px rgba(0,0,0,0.08); --radius:12px;
+    --purple:#6366F1; --amber:#D97706; --teal:#0D9488;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;display:flex;flex-direction:column;overflow-x:hidden}
 
-  .header{background:var(--primary);color:white;padding:14px 20px;position:sticky;top:0;z-index:100}
+  .header{background:var(--primary);color:#fff;padding:14px 20px;position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center}
   .header h1{font-size:18px;font-weight:700}
+  .net-dot{width:9px;height:9px;border-radius:50%;background:#4ADE80;box-shadow:0 0 6px #4ADE80}
+  .net-dot.off{background:#F87171;box-shadow:0 0 6px #F87171}
 
   .content{flex:1;padding:12px 16px 100px;max-width:600px;margin:0 auto;width:100%}
-  .tab-content{display:none}.tab-content.active{display:block}
+  .tab-content{display:none}.tab-content.active{display:block;animation:fadeIn 0.2s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
   .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:12px}
   .card-title{font-size:14px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px}
 
-  /* Section Date Picker */
   .section-date{display:flex;align-items:center;gap:8px;background:var(--primary-light);border-radius:10px;padding:8px 12px;margin-bottom:12px}
-  .section-date input[type="date"]{flex:1;background:transparent;border:none;color:var(--primary);font-size:15px;font-weight:700;font-family:inherit;outline:none}
-  .section-date .sd-btn{background:var(--primary);border:none;color:white;font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;cursor:pointer;white-space:nowrap}
+  .section-date input[type="date"]{flex:1;background:transparent;border:none;color:var(--primary);font-size:15px;font-weight:700;font-family:inherit;outline:none;min-width:0}
+  .section-date .sd-btn{background:var(--primary);border:none;color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;cursor:pointer;white-space:nowrap}
 
-  input[type="number"],input[type="text"],select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;font-family:inherit;background:var(--input-bg);color:var(--text);outline:none;transition:border-color 0.15s}
-  input:focus,select:focus{border-color:var(--primary);background:white}
+  input[type="number"],input[type="text"]{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;font-family:inherit;background:var(--input-bg);color:var(--text);outline:none;transition:border-color 0.15s}
+  input:focus{border-color:var(--primary);background:#fff}
   input[type="number"]{-moz-appearance:textfield;text-align:center;font-weight:600;padding:10px 6px}
   input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none}
   input.has-data{border-color:var(--primary);background:var(--primary-light)}
@@ -42,10 +45,9 @@
 
   .btn{width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:transform 0.1s;display:flex;align-items:center;justify-content:center;gap:8px}
   .btn:active{transform:scale(0.98)}
-  .btn-primary{background:var(--primary);color:white}
+  .btn-primary{background:var(--primary);color:#fff}
   .btn-primary:disabled{opacity:0.5;cursor:not-allowed}
 
-  /* Purchase Cards */
   .purchase-card{padding:12px 0;border-bottom:1px solid var(--border)}
   .purchase-card:last-child{border-bottom:none}
   .purchase-header{font-size:15px;font-weight:700;margin-bottom:8px}
@@ -55,29 +57,39 @@
   .purchase-pair input{font-size:13px;padding:8px 6px}
   .purchase-pair .pi-label{font-size:9px;color:var(--text-secondary);text-align:center;margin-top:2px;font-weight:600}
 
-  /* Sales Counter */
   .period-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700}
-  .period-badge.morning{background:#FEF3C7;color:#92400E}
-  .period-badge.evening{background:#DBEAFE;color:#1E40AF}
+  .period-badge.morning{background:var(--warn-light);color:#92400E}
+  .period-badge.evening{background:var(--primary-light);color:#1E40AF}
 
   .counter-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
-  .counter-col{display:flex;flex-direction:column;gap:6px}
-  .counter-btn{background:var(--card);border:2.5px solid var(--border);border-radius:14px;padding:16px 8px;cursor:pointer;text-align:center;transition:transform 0.1s,box-shadow 0.15s;box-shadow:var(--shadow);user-select:none;-webkit-user-select:none}
-  .counter-btn:active{transform:scale(0.93)}
+  .counter-col{display:flex;flex-direction:column;gap:6px;position:relative}
+  .counter-btn{background:var(--card);border:2.5px solid var(--border);border-radius:14px;padding:16px 8px;cursor:pointer;text-align:center;transition:transform 0.08s,box-shadow 0.15s;box-shadow:var(--shadow);user-select:none;-webkit-user-select:none;position:relative;overflow:visible}
+  .counter-btn:active{transform:scale(0.92)}
   .counter-btn .cb-icon{font-size:28px;margin-bottom:2px}
   .counter-btn .cb-label{font-size:16px;font-weight:800;color:var(--text)}
   .counter-btn .cb-sub{font-size:10px;font-weight:600;color:var(--text-secondary)}
   .counter-btn.quarter{border-color:var(--teal)}.counter-btn.quarter:active{box-shadow:0 0 0 3px #CCFBF1}
   .counter-btn.half{border-color:var(--purple)}.counter-btn.half:active{box-shadow:0 0 0 3px #E0E7FF}
-  .counter-btn.full{border-color:var(--amber)}.counter-btn.full:active{box-shadow:0 0 0 3px #FEF3C7}
+  .counter-btn.full{border-color:var(--amber)}.counter-btn.full:active{box-shadow:0 0 0 3px var(--warn-light)}
   .price-override input{font-size:12px;padding:7px 4px;border-radius:6px;width:100%}
+
+  /* floating +N feedback */
+  .tap-float{position:absolute;top:-4px;left:50%;transform:translateX(-50%);font-size:15px;font-weight:800;pointer-events:none;animation:floatUp 0.7s ease forwards;z-index:5}
+  @keyframes floatUp{0%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(-28px)}}
+
+  .pending-bar{border-radius:8px;padding:6px 12px;text-align:center;font-size:12px;font-weight:600;margin-bottom:8px;display:none;align-items:center;justify-content:center;gap:6px}
+  .pending-bar.saving{display:flex;background:var(--warn-light);border:1.5px solid var(--warn);color:#92400E}
+  .pending-bar.error{display:flex;background:var(--danger-light);border:1.5px solid var(--danger);color:var(--danger)}
+  .pending-dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:blink 1s ease infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 
   .sales-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
   .stat-card{background:var(--card);border-radius:10px;box-shadow:var(--shadow);padding:10px;text-align:center}
   .stat-card.q-stat{border-top:3px solid var(--teal)}
   .stat-card.h-stat{border-top:3px solid var(--purple)}
   .stat-card.f-stat{border-top:3px solid var(--amber)}
-  .stat-total{font-size:28px;font-weight:800;line-height:1}
+  .stat-total{font-size:26px;font-weight:800;line-height:1;transition:transform 0.15s}
+  .stat-total.bump{transform:scale(1.25)}
   .stat-total.q-color{color:var(--teal)}.stat-total.h-color{color:var(--purple)}.stat-total.f-color{color:var(--amber)}
   .stat-label{font-size:10px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.3px;margin-top:3px}
   .stat-breakdown{font-size:11px;color:var(--text-secondary);margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
@@ -85,18 +97,13 @@
   .stat-time{font-size:10px;color:var(--text-secondary);margin-top:4px;font-style:italic}
 
   .litres-bar{background:var(--primary-light);border-radius:10px;padding:10px;text-align:center;margin-bottom:10px}
-  .litres-bar .lv-amount{font-size:18px;font-weight:800;color:var(--primary)}
+  .litres-bar .lv-amount{font-size:20px;font-weight:800;color:var(--primary)}
   .litres-bar .lv-label{font-size:11px;font-weight:600;color:#1E40AF}
 
   .undo-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px}
   .btn-undo{padding:9px 4px;border:1.5px solid var(--border);border-radius:8px;background:var(--card);font-size:12px;font-weight:600;color:var(--text-secondary);cursor:pointer;text-align:center;transition:all 0.15s}
   .btn-undo:active{background:var(--danger-light);border-color:var(--danger);color:var(--danger)}
   .btn-undo:disabled{opacity:0.35;cursor:not-allowed;pointer-events:none;background:var(--bg)}
-
-  .pending-bar{background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:8px;padding:6px 12px;text-align:center;font-size:12px;font-weight:600;color:#92400E;margin-bottom:8px;display:none}
-  .pending-bar.active{display:flex;align-items:center;justify-content:center;gap:6px}
-  .pending-dot{width:6px;height:6px;border-radius:50%;background:#F59E0B;animation:blink 1s ease infinite}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 
   .total-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 0 4px;margin-top:4px}
   .total-label{font-size:14px;font-weight:600;color:var(--text-secondary)}
@@ -105,9 +112,9 @@
 
   .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);padding:12px 24px;border-radius:10px;font-size:14px;font-weight:600;z-index:1000;transition:transform 0.3s ease;box-shadow:0 4px 16px rgba(0,0,0,0.15);max-width:90vw;text-align:center}
   .toast.show{transform:translateX(-50%) translateY(0)}
-  .toast.success{background:var(--success);color:white}.toast.error{background:var(--danger);color:white}.toast.info{background:var(--text);color:white}
+  .toast.success{background:var(--success);color:#fff}.toast.error{background:var(--danger);color:#fff}.toast.info{background:var(--text);color:#fff}
 
-  .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#FFFFFF;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom,0)}
+  .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom,0)}
   .nav-tab{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 4px 10px;border:none;background:none;color:var(--text-secondary);font-size:10px;font-weight:600;font-family:inherit;cursor:pointer;gap:3px;position:relative}
   .nav-tab.active{color:var(--primary)}
   .nav-tab.active::before{content:'';position:absolute;top:0;left:20%;right:20%;height:2.5px;background:var(--primary);border-radius:0 0 2px 2px}
@@ -133,20 +140,23 @@
   .loading-bar::after{content:'';display:block;height:100%;width:30%;background:var(--primary);animation:ls 0.8s ease infinite}
   @keyframes ls{0%{transform:translateX(-100%)}100%{transform:translateX(400%)}}
 
+  .skeleton{background:linear-gradient(90deg,var(--border) 25%,#F1F5F9 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.2s infinite;border-radius:8px;height:48px;margin-bottom:8px}
+  @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
   .supplier-tag{display:inline-flex;align-items:center;gap:6px;background:var(--primary-light);color:var(--primary);padding:6px 12px;border-radius:20px;font-size:13px;font-weight:600;margin:4px}
   .supplier-tag .remove{cursor:pointer;font-size:16px;line-height:1;opacity:0.6}
   .add-supplier-row{display:flex;gap:8px;margin-top:10px}
   .add-supplier-row input{flex:1}
-  .btn-sm{padding:10px 16px;border:none;border-radius:8px;background:var(--primary);color:white;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .btn-sm{padding:10px 16px;border:none;border-radius:8px;background:var(--primary);color:#fff;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
   .url-input-group{display:flex;gap:8px}.url-input-group input{flex:1;font-size:13px}
   .status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
   .status-dot.connected{background:var(--success)}.status-dot.disconnected{background:var(--danger)}
   .toggle-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
   .toggle-row .toggle-label{font-size:14px;font-weight:500}
   .toggle-row .toggle-sub{font-size:12px;color:var(--text-secondary)}
-  .toggle{width:44px;height:24px;border-radius:12px;background:var(--border);position:relative;cursor:pointer;border:none;transition:background 0.2s}
+  .toggle{width:44px;height:24px;border-radius:12px;background:var(--border);position:relative;cursor:pointer;border:none;transition:background 0.2s;flex-shrink:0}
   .toggle.on{background:var(--primary)}
-  .toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:white;box-shadow:0 1px 3px rgba(0,0,0,0.2);transition:transform 0.2s}
+  .toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.2);transition:transform 0.2s}
   .toggle.on::after{transform:translateX(20px)}
 </style>
 </head>
@@ -154,7 +164,10 @@
 <div class="loading-bar" id="loadingBar"></div>
 <div class="toast" id="toast"></div>
 
-<div class="header"><h1>🥛 Hemnath Milk Shop</h1></div>
+<div class="header">
+  <h1>🥛 Hemnath Milk Shop</h1>
+  <div class="net-dot" id="netDot" title="Online"></div>
+</div>
 
 <div class="content">
 
@@ -181,30 +194,30 @@
     <button class="btn btn-primary" id="btnSavePurchases" onclick="savePurchases()">Save Purchases</button>
   </div>
 
-  <!-- ════ SALES COUNTER ════ -->
+  <!-- ════ SALES ════ -->
   <div class="tab-content" id="tab-sales">
     <div class="section-date">
-      <input type="date" id="salesDate" onchange="loadSalesData()">
-      <button class="sd-btn" onclick="setDateToday('salesDate',loadSalesData)">Today</button>
+      <input type="date" id="salesDate" onchange="onSalesDateChange()">
+      <button class="sd-btn" onclick="setDateToday('salesDate',onSalesDateChange)">Today</button>
     </div>
     <div style="text-align:center;margin-bottom:8px">
       <div class="period-badge" id="periodBadge">☀️ Morning</div>
     </div>
     <div class="counter-grid">
-      <div class="counter-col">
-        <div class="counter-btn quarter" onclick="tapSale('0.25L')"><div class="cb-icon">🥛</div><div class="cb-label">¼ L</div><div class="cb-sub">Tap to count</div></div>
+      <div class="counter-col" id="col_q">
+        <div class="counter-btn quarter" onclick="tapSale('0.25L',this)"><div class="cb-icon">🥛</div><div class="cb-label">¼ L</div><div class="cb-sub">Tap to count</div></div>
         <div class="price-override"><input type="number" id="priceOverride_q" step="1" inputmode="decimal" onfocus="this.select()"></div>
       </div>
-      <div class="counter-col">
-        <div class="counter-btn half" onclick="tapSale('0.5L')"><div class="cb-icon">🥛</div><div class="cb-label">½ L</div><div class="cb-sub">Tap to count</div></div>
+      <div class="counter-col" id="col_h">
+        <div class="counter-btn half" onclick="tapSale('0.5L',this)"><div class="cb-icon">🥛</div><div class="cb-label">½ L</div><div class="cb-sub">Tap to count</div></div>
         <div class="price-override"><input type="number" id="priceOverride_h" step="1" inputmode="decimal" onfocus="this.select()"></div>
       </div>
-      <div class="counter-col">
-        <div class="counter-btn full" onclick="tapSale('1L')"><div class="cb-icon">🧴</div><div class="cb-label">1 L</div><div class="cb-sub">Tap to count</div></div>
+      <div class="counter-col" id="col_f">
+        <div class="counter-btn full" onclick="tapSale('1L',this)"><div class="cb-icon">🧴</div><div class="cb-label">1 L</div><div class="cb-sub">Tap to count</div></div>
         <div class="price-override"><input type="number" id="priceOverride_f" step="1" inputmode="decimal" onfocus="this.select()"></div>
       </div>
     </div>
-    <div class="pending-bar" id="pendingBar"><span class="pending-dot"></span><span id="pendingText">Saving...</span></div>
+    <div class="pending-bar" id="pendingBar"><span class="pending-dot"></span><span id="pendingText">Saving…</span></div>
     <div class="litres-bar">
       <div class="lv-amount"><span id="totalLitresSold">0</span> L</div>
       <div class="lv-label">Total Litres Sold</div>
@@ -233,7 +246,7 @@
     </div>
   </div>
 
-  <!-- ════ UPI (hidden) ════ -->
+  <!-- ════ UPI ════ -->
   <div class="tab-content" id="tab-upi">
     <div class="section-date">
       <input type="date" id="upiDate" onchange="loadUpiData()">
@@ -249,7 +262,7 @@
     <div class="history-header" id="upiHistoryTitle">Today's UPI Sales</div><div id="upiHistory"></div>
   </div>
 
-  <!-- ════ CASH (hidden) ════ -->
+  <!-- ════ CASH ════ -->
   <div class="tab-content" id="tab-cash">
     <div class="section-date">
       <input type="date" id="cashDate" onchange="loadCashData()">
@@ -315,9 +328,9 @@
     <div class="card">
       <div class="card-title">Selling Prices</div>
       <div class="form-row-3">
-        <div class="form-group"><label>¼ L (₹)</label><input type="number" id="sellPriceQ" placeholder="e.g. 15" step="1" inputmode="decimal" onchange="saveSetting()"></div>
-        <div class="form-group"><label>½ L (₹)</label><input type="number" id="sellPriceH" placeholder="e.g. 30" step="1" inputmode="decimal" onchange="saveSetting()"></div>
-        <div class="form-group"><label>1 L (₹)</label><input type="number" id="sellPriceF" placeholder="e.g. 56" step="1" inputmode="decimal" onchange="saveSetting()"></div>
+        <div class="form-group"><label>¼ L (₹)</label><input type="number" id="sellPriceQ" placeholder="15" step="1" inputmode="decimal" onchange="saveSetting()"></div>
+        <div class="form-group"><label>½ L (₹)</label><input type="number" id="sellPriceH" placeholder="30" step="1" inputmode="decimal" onchange="saveSetting()"></div>
+        <div class="form-group"><label>1 L (₹)</label><input type="number" id="sellPriceF" placeholder="56" step="1" inputmode="decimal" onchange="saveSetting()"></div>
       </div>
     </div>
     <div class="card">
@@ -350,493 +363,554 @@
 </div>
 
 <script>
+'use strict';
+// ═══════════════ CONFIG & STATE ═══════════════
+const ITEMS=['0.25L','0.5L','1L'];
+const ITEM_META={
+  '0.25L':{pfx:'q',litres:0.25,undoBtn:'undoQ',ovInput:'priceOverride_q',col:'col_q'},
+  '0.5L' :{pfx:'h',litres:0.5, undoBtn:'undoH',ovInput:'priceOverride_h',col:'col_h'},
+  '1L'   :{pfx:'f',litres:1,   undoBtn:'undoF',ovInput:'priceOverride_f',col:'col_f'}
+};
 const DEFAULT_SUPPLIERS=['SPK','Subramani','Miniraj','Miy','Gobi','Venkatesh','Sudhakar','Avalapalli'];
-const LS={scriptUrl:'hm_url',suppliers:'hm_sup',buyPrice:'hm_bp',sellQ:'hm_sq',sellH:'hm_sh',sellF:'hm_sf',cutoff:'hm_cut',showSaleTabs:'hm_st'};
+const LS={scriptUrl:'hm_url',suppliers:'hm_sup',buyPrice:'hm_bp',sellQ:'hm_sq',sellH:'hm_sh',sellF:'hm_sf',cutoff:'hm_cut',showSaleTabs:'hm_st',pendingBackup:'hm_pending'};
 
-let suppliers=JSON.parse(localStorage.getItem(LS.suppliers))||[...DEFAULT_SUPPLIERS];
+let suppliers=safeParse(localStorage.getItem(LS.suppliers))||[...DEFAULT_SUPPLIERS];
 let scriptUrl=localStorage.getItem(LS.scriptUrl)||'';
 let cfg={
-  buyPrice:parseFloat(localStorage.getItem(LS.buyPrice))||0,
-  sellQ:parseFloat(localStorage.getItem(LS.sellQ))||0,
-  sellH:parseFloat(localStorage.getItem(LS.sellH))||0,
-  sellF:parseFloat(localStorage.getItem(LS.sellF))||0,
+  buyPrice:num(localStorage.getItem(LS.buyPrice)),
+  sellQ:num(localStorage.getItem(LS.sellQ)),
+  sellH:num(localStorage.getItem(LS.sellH)),
+  sellF:num(localStorage.getItem(LS.sellF)),
   cutoff:parseInt(localStorage.getItem(LS.cutoff))||12,
   showSaleTabs:localStorage.getItem(LS.showSaleTabs)==='true'
 };
 
-// ══════════════════════════════
-//  INIT
-// ══════════════════════════════
+function safeParse(s){try{return JSON.parse(s)}catch(e){return null}}
+function num(v){return parseFloat(v)||0}
+function $(id){return document.getElementById(id)}
+function fmtL(v){return v%1===0?String(v):v.toFixed(2)}
+function fmtDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function vibrate(ms){try{if(navigator.vibrate)navigator.vibrate(ms)}catch(e){}}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+
+// ═══════════════ INIT ═══════════════
 function init(){
-  // Set all dates to today
   const today=fmtDate(new Date());
-  ['purchaseDate','salesDate','upiDate','cashDate','expenseDate'].forEach(id=>document.getElementById(id).value=today);
-
-  renderSupplierGrid(); renderSupplierTags(); updateConnectionStatus();
-  document.getElementById('scriptUrl').value=scriptUrl;
-  document.getElementById('defaultBuyPrice').value=cfg.buyPrice||'';
-  document.getElementById('sellPriceQ').value=cfg.sellQ||'';
-  document.getElementById('sellPriceH').value=cfg.sellH||'';
-  document.getElementById('sellPriceF').value=cfg.sellF||'';
-  document.getElementById('cutoffHour').value=cfg.cutoff;
-  updatePriceOverridePlaceholders();
-  applySaleTabToggle(); updatePeriodBadge();
-
-  // Load all sections
+  ['purchaseDate','salesDate','upiDate','cashDate','expenseDate'].forEach(id=>$(id).value=today);
+  renderSupplierGrid();renderSupplierTags();updateConnectionStatus();
+  $('scriptUrl').value=scriptUrl;
+  $('defaultBuyPrice').value=cfg.buyPrice||'';
+  $('sellPriceQ').value=cfg.sellQ||'';
+  $('sellPriceH').value=cfg.sellH||'';
+  $('sellPriceF').value=cfg.sellF||'';
+  $('cutoffHour').value=cfg.cutoff;
+  updatePriceOverridePlaceholders();applySaleTabToggle();updatePeriodBadge();
+  updateNetDot();
+  restorePendingBackup();  // recover any taps lost in a previous crash
   reloadAll();
+  // Keep period badge fresh (crosses cutoff hour while app is open)
+  setInterval(updatePeriodBadge,60000);
 }
 
-function fmtDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function setDateToday(inputId,loadFn){document.getElementById(inputId).value=fmtDate(new Date());loadFn()}
+window.addEventListener('online',updateNetDot);
+window.addEventListener('offline',updateNetDot);
+function updateNetDot(){
+  const on=navigator.onLine;
+  $('netDot').className='net-dot'+(on?'':' off');
+  $('netDot').title=on?'Online':'Offline';
+  if(!on)showToast('You are offline — taps will be saved when back online','info');
+}
+
 function getCurrentPeriod(){return new Date().getHours()<cfg.cutoff?'Morning':'Evening'}
 function getCurrentTime(){const d=new Date();let h=d.getHours(),m=d.getMinutes();const a=h>=12?'PM':'AM';h=h%12||12;return h+':'+String(m).padStart(2,'0')+' '+a}
-function updatePeriodBadge(){const p=getCurrentPeriod();const el=document.getElementById('periodBadge');el.textContent=(p==='Morning'?'☀️ ':'🌙 ')+p;el.className='period-badge '+p.toLowerCase()}
+function updatePeriodBadge(){const p=getCurrentPeriod();const el=$('periodBadge');el.textContent=(p==='Morning'?'☀️ ':'🌙 ')+p;el.className='period-badge '+p.toLowerCase()}
 function updatePriceOverridePlaceholders(){
-  document.getElementById('priceOverride_q').placeholder='₹'+(cfg.sellQ||'?');
-  document.getElementById('priceOverride_h').placeholder='₹'+(cfg.sellH||'?');
-  document.getElementById('priceOverride_f').placeholder='₹'+(cfg.sellF||'?');
+  $('priceOverride_q').placeholder='₹'+(cfg.sellQ||'?');
+  $('priceOverride_h').placeholder='₹'+(cfg.sellH||'?');
+  $('priceOverride_f').placeholder='₹'+(cfg.sellF||'?');
 }
-
+function setDateToday(inputId,loadFn){$(inputId).value=fmtDate(new Date());loadFn()}
 function dateLabelFor(inputId){
-  const d=document.getElementById(inputId).value;if(!d)return'';
+  const d=$(inputId).value;if(!d)return'';
   if(d===fmtDate(new Date()))return"Today's";
   return new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short'})+"'s";
 }
-
 function switchTab(id,btn){
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');
+  $('tab-'+id).classList.add('active');btn.classList.add('active');
 }
-
 function reloadAll(){loadPurchaseData();loadSalesData();loadUpiData();loadCashData();loadExpenseData()}
 
-// ══════════════════════════════
-//  SECTION DATA LOADERS
-// ══════════════════════════════
+// ═══════════════ API LAYER ═══════════════
+async function apiGet(params){
+  const res=await fetch(scriptUrl+'?'+new URLSearchParams(params),{redirect:'follow'});
+  return res.json();
+}
+async function apiPost(body,opts){
+  const res=await fetch(scriptUrl,{
+    method:'POST',body:JSON.stringify(body),
+    headers:{'Content-Type':'text/plain'},redirect:'follow',
+    keepalive:!!(opts&&opts.keepalive)
+  });
+  return res.json();
+}
+
+// Request tokens: prevent a slow older response from overwriting a newer one
+const loadTokens={purchase:0,sales:0,upi:0,cash:0,expense:0};
+
 async function fetchDateData(date){
-  if(!date||!scriptUrl) return null;
-  try{
-    const res=await fetch(scriptUrl+'?action=getByDate&date='+encodeURIComponent(date),{redirect:'follow'});
-    const j=await res.json();
-    return j.status==='success'?j.data:null;
-  }catch(e){console.warn('Fetch error:',e);return null}
+  if(!date||!scriptUrl)return null;
+  try{const j=await apiGet({action:'getByDate',date});return j.status==='success'?j.data:null}
+  catch(e){console.warn('Fetch error:',e);return null}
 }
 
+// ═══════════════ SECTION LOADERS ═══════════════
 async function loadPurchaseData(){
-  const date=document.getElementById('purchaseDate').value;
+  const token=++loadTokens.purchase;
   setLoading(true);
-  const data=await fetchDateData(date);
-  if(data) populatePurchases(data.purchases||[]);
-  else clearPurchases();
+  const data=await fetchDateData($('purchaseDate').value);
+  if(token===loadTokens.purchase){ // only apply if still the latest request
+    if(data)populatePurchases(data.purchases||[]);else clearPurchases();
+  }
   setLoading(false);
 }
-
+function onSalesDateChange(){loadSalesData()}
 async function loadSalesData(){
-  const date=document.getElementById('salesDate').value;
+  const token=++loadTokens.sales;
   setLoading(true);
-  const data=await fetchDateData(date);
-  if(data) populateSales(data.sales||[]);
-  else resetSalesUI();
+  const data=await fetchDateData($('salesDate').value);
+  if(token===loadTokens.sales){
+    if(data)populateSales(data.sales||[]);else resetSalesUI();
+  }
   setLoading(false);
 }
-
 async function loadUpiData(){
-  const date=document.getElementById('upiDate').value;
-  const data=await fetchDateData(date);
-  const label=dateLabelFor('upiDate');
-  document.getElementById('upiHistoryTitle').textContent=label+' UPI Sales';
-  if(data) popHistory(data.upi_sales||[],'upiHistory');
-  else document.getElementById('upiHistory').innerHTML='<div class="history-empty">No entries</div>';
+  const token=++loadTokens.upi;
+  $('upiHistoryTitle').textContent=dateLabelFor('upiDate')+' UPI Sales';
+  const data=await fetchDateData($('upiDate').value);
+  if(token===loadTokens.upi){
+    if(data)popHistory(data.upi_sales||[],'upiHistory');
+    else $('upiHistory').innerHTML='<div class="history-empty">No entries</div>';
+  }
 }
-
 async function loadCashData(){
-  const date=document.getElementById('cashDate').value;
-  const data=await fetchDateData(date);
-  const label=dateLabelFor('cashDate');
-  document.getElementById('cashHistoryTitle').textContent=label+' Cash Sales';
-  if(data) popHistory(data.cash_sales||[],'cashHistory');
-  else document.getElementById('cashHistory').innerHTML='<div class="history-empty">No entries</div>';
+  const token=++loadTokens.cash;
+  $('cashHistoryTitle').textContent=dateLabelFor('cashDate')+' Cash Sales';
+  const data=await fetchDateData($('cashDate').value);
+  if(token===loadTokens.cash){
+    if(data)popHistory(data.cash_sales||[],'cashHistory');
+    else $('cashHistory').innerHTML='<div class="history-empty">No entries</div>';
+  }
 }
-
 async function loadExpenseData(){
-  const date=document.getElementById('expenseDate').value;
-  const label=dateLabelFor('expenseDate');
-  document.getElementById('expenseHistoryTitle').textContent=label+' Expenses';
-  const data=await fetchDateData(date);
-  if(data) popExpenseHistory(data.expenses||[]);
-  else document.getElementById('expenseHistory').innerHTML='<div class="history-empty">No entries</div>';
+  const token=++loadTokens.expense;
+  $('expenseHistoryTitle').textContent=dateLabelFor('expenseDate')+' Expenses';
+  const data=await fetchDateData($('expenseDate').value);
+  if(token===loadTokens.expense){
+    if(data)popExpenseHistory(data.expenses||[]);
+    else $('expenseHistory').innerHTML='<div class="history-empty">No entries</div>';
+  }
 }
 
-// ══════════════════════════════
-//  POPULATE UI
-// ══════════════════════════════
+// ═══════════════ PURCHASES ═══════════════
 function renderSupplierGrid(){
   const dp=cfg.buyPrice;
-  document.getElementById('supplierGrid').innerHTML=suppliers.map(name=>`
-    <div class="purchase-card"><div class="purchase-header">${name}</div>
+  $('supplierGrid').innerHTML=suppliers.map(name=>`
+    <div class="purchase-card"><div class="purchase-header">${esc(name)}</div>
       <div class="purchase-cols">
         <div><div class="purchase-col-label">☀️ Morning</div>
           <div class="purchase-pair">
-            <div><input type="number" step="0.25" inputmode="decimal" placeholder="L" data-s="${name}" data-f="morn_l" onfocus="this.select()" oninput="updatePurchaseTotals()"><div class="pi-label">Litres</div></div>
-            <div><input type="number" step="1" inputmode="decimal" placeholder="${dp?'₹'+dp:'₹/L'}" data-s="${name}" data-f="morn_p" onfocus="this.select()" oninput="updatePurchaseTotals()"><div class="pi-label">₹/Litre</div></div>
+            <div><input type="number" step="0.25" inputmode="decimal" placeholder="L" data-s="${esc(name)}" data-f="morn_l" onfocus="this.select()" oninput="updatePurchaseTotals()"><div class="pi-label">Litres</div></div>
+            <div><input type="number" step="1" inputmode="decimal" placeholder="${dp?'₹'+dp:'₹/L'}" data-s="${esc(name)}" data-f="morn_p" onfocus="this.select()" oninput="updatePurchaseTotals()"><div class="pi-label">₹/Litre</div></div>
           </div></div>
         <div><div class="purchase-col-label">🌙 Evening</div>
           <div class="purchase-pair">
-            <div><input type="number" step="0.25" inputmode="decimal" placeholder="L" data-s="${name}" data-f="eve_l" onfocus="this.select()" oninput="updatePurchaseTotals()"><div class="pi-label">Litres</div></div>
-            <div><input type="number" step="1" inputmode="decimal" placeholder="${dp?'₹'+dp:'₹/L'}" data-s="${name}" data-f="eve_p" onfocus="this.select()" oninput="updatePurchaseTotals()"><div class="pi-label">₹/Litre</div></div>
+            <div><input type="number" step="0.25" inputmode="decimal" placeholder="L" data-s="${esc(name)}" data-f="eve_l" onfocus="this.select()" oninput="updatePurchaseTotals()"><div class="pi-label">Litres</div></div>
+            <div><input type="number" step="1" inputmode="decimal" placeholder="${dp?'₹'+dp:'₹/L'}" data-s="${esc(name)}" data-f="eve_p" onfocus="this.select()" oninput="updatePurchaseTotals()"><div class="pi-label">₹/Litre</div></div>
           </div></div>
       </div></div>`).join('');
 }
-
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function pv(s,f){return num(document.querySelector(`input[data-s="${CSS.escape(s)}"][data-f="${f}"]`)?.value)}
 function updatePurchaseTotals(){
   let tL=0,tC=0;
   suppliers.forEach(n=>{
     const ml=pv(n,'morn_l'),mp=pv(n,'morn_p')||cfg.buyPrice,el=pv(n,'eve_l'),ep=pv(n,'eve_p')||cfg.buyPrice;
     tL+=ml+el;tC+=(ml*mp)+(el*ep);
   });
-  document.getElementById('purchaseTotal').textContent=tL%1===0?tL:tL.toFixed(2);
-  document.getElementById('purchaseCost').textContent=Math.round(tC);
+  $('purchaseTotal').textContent=fmtL(tL);
+  $('purchaseCost').textContent=Math.round(tC);
 }
-function pv(s,f){return parseFloat(document.querySelector(`input[data-s="${s}"][data-f="${f}"]`)?.value)||0}
-
 function clearPurchases(){
   document.querySelectorAll('#supplierGrid input').forEach(i=>{i.value='';i.classList.remove('has-data')});
-  updatePurchaseTotals();document.getElementById('purchaseSavedBadge').innerHTML='';
+  updatePurchaseTotals();$('purchaseSavedBadge').innerHTML='';
 }
-
 function populatePurchases(rows){
   clearPurchases();let has=false;
   rows.forEach(r=>{
     const s=r.Supplier;
     const map={morn_l:r['Morning (L)'],morn_p:r['Morning (₹/L)'],eve_l:r['Evening (L)'],eve_p:r['Evening (₹/L)']};
-    Object.entries(map).forEach(([f,v])=>{if(v){const el=document.querySelector(`input[data-s="${s}"][data-f="${f}"]`);if(el){el.value=v;el.classList.add('has-data');has=true;}}});
+    Object.entries(map).forEach(([f,v])=>{
+      if(v){const el=document.querySelector(`input[data-s="${CSS.escape(s)}"][data-f="${f}"]`);if(el){el.value=v;el.classList.add('has-data');has=true}}
+    });
   });
   updatePurchaseTotals();
-  document.getElementById('purchaseSavedBadge').innerHTML=has?'<span class="saved-badge">✓ Saved</span>':'';
+  $('purchaseSavedBadge').innerHTML=has?'<span class="saved-badge">✓ Saved</span>':'';
 }
-
-function populateSales(rows){
-  let c={qm:0,qe:0,hm:0,he:0,fm:0,fe:0,lq:'',lh:'',lf:''};
-  rows.forEach(r=>{
-    const item=String(r.Item),period=String(r.Period),time=r.Time||'';
-    if(item==='0.25L'){if(period==='Morning')c.qm++;else c.qe++;c.lq=time;}
-    else if(item==='0.5L'){if(period==='Morning')c.hm++;else c.he++;c.lh=time;}
-    else if(item==='1L'){if(period==='Morning')c.fm++;else c.fe++;c.lf=time;}
-  });
-  setSalesUI(c);
-}
-
-function setSalesUI(c){
-  const qt=c.qm+c.qe, ht=c.hm+c.he, ft=c.fm+c.fe;
-  // Show litres, not packet count
-  const qL=qt*0.25, hL=ht*0.5, fL=ft*1;
-  document.getElementById('qTotal').textContent=fmtL(qL);
-  document.getElementById('qAM').textContent=fmtL(c.qm*0.25)+' L';
-  document.getElementById('qPM').textContent=fmtL(c.qe*0.25)+' L';
-  document.getElementById('qLast').textContent=c.lq?'Last: '+fmtTime(c.lq):'—';
-  document.getElementById('hTotal').textContent=fmtL(hL);
-  document.getElementById('hAM').textContent=fmtL(c.hm*0.5)+' L';
-  document.getElementById('hPM').textContent=fmtL(c.he*0.5)+' L';
-  document.getElementById('hLast').textContent=c.lh?'Last: '+fmtTime(c.lh):'—';
-  document.getElementById('fTotal').textContent=fmtL(fL);
-  document.getElementById('fAM').textContent=fmtL(c.fm)+' L';
-  document.getElementById('fPM').textContent=fmtL(c.fe)+' L';
-  document.getElementById('fLast').textContent=c.lf?'Last: '+fmtTime(c.lf):'—';
-  const totalL=qL+hL+fL;
-  document.getElementById('totalLitresSold').textContent=fmtL(totalL);
-  updateUndoButtons();
-}
-function updateUndoButtons(){
-  document.getElementById('undoQ').disabled=(parseFloat(document.getElementById('qTotal').textContent)||0)<=0;
-  document.getElementById('undoH').disabled=(parseFloat(document.getElementById('hTotal').textContent)||0)<=0;
-  document.getElementById('undoF').disabled=(parseFloat(document.getElementById('fTotal').textContent)||0)<=0;
-}
-function fmtL(v){return v%1===0?v:v.toFixed(2)}
-// Handle Google Sheets time auto-conversion: "1899-12-30T08:31:50.000Z" → "2:01 PM"
-function fmtTime(t){
-  if(!t)return'—';
-  const s=String(t);
-  if(s.includes('1899')||s.includes('1970')||s.includes('T')){
-    try{const d=new Date(s);if(!isNaN(d)){let h=d.getUTCHours(),m=d.getUTCMinutes();const a=h>=12?'PM':'AM';h=h%12||12;return h+':'+String(m).padStart(2,'0')+' '+a;}}catch(e){}
-  }
-  return s;
-}
-function resetSalesUI(){setSalesUI({qm:0,qe:0,hm:0,he:0,fm:0,fe:0,lq:'',lh:'',lf:''})}
-
-function popHistory(rows,cId){
-  const el=document.getElementById(cId);
-  if(!rows.length){el.innerHTML='<div class="history-empty">No entries</div>';return}
-  let ta=0,tl=0,html='';
-  rows.forEach(r=>{const c=r.Customer||'—',l=r.Litres||0,a=r['Amount (₹)']||0,n=r['UPI Ref']||r.Note||'';
-    ta+=parseFloat(a)||0;tl+=parseFloat(l)||0;
-    html+=`<div class="history-card"><div class="history-left"><div class="history-name">${c}</div><div class="history-detail">${l?l+' L':''}${n?' · '+n:''}</div></div><div class="history-amount" style="color:var(--success)">₹${a}</div></div>`;
-  });
-  html+=`<div style="display:flex;justify-content:space-between;padding:10px 4px 0;font-size:13px;font-weight:700"><span style="color:var(--text-secondary)">${rows.length} · ${tl} L</span><span style="color:var(--success)">₹${ta}</span></div>`;
-  el.innerHTML=html;
-}
-
-function popExpenseHistory(rows){
-  const el=document.getElementById('expenseHistory');
-  if(!rows.length){el.innerHTML='<div class="history-empty">No expenses</div>';return}
-  let t=0,html='';
-  rows.forEach(r=>{const c=r.Category||'—',a=r['Amount (₹)']||0,q=r.Quantity||'',n=r.Note||'';t+=parseFloat(a)||0;
-    html+=`<div class="history-card"><div class="history-left"><div class="history-name">${c}</div><div class="history-detail">${q?'Qty: '+q:''}${n?(q?' · ':'')+n:''}</div></div><div class="history-amount" style="color:var(--danger)">₹${a}</div></div>`;
-  });
-  html+=`<div style="text-align:right;padding:10px 4px 0;font-size:13px;font-weight:700;color:var(--danger)">Total: ₹${t}</div>`;
-  el.innerHTML=html;
-}
-
-// ══════════════════════════════
-//  SALES TAP (BATCHED) & UNDO
-// ══════════════════════════════
-let tapQueue={'0.25L':0,'0.5L':0,'1L':0};
-let tapPrices={'0.25L':0,'0.5L':0,'1L':0};
-let tapTimer=null;
-let isFlushing=false;
-const TAP_DELAY=1200;
-
-function hasPendingTaps(){return tapQueue['0.25L']>0||tapQueue['0.5L']>0||tapQueue['1L']>0}
-
-function updatePendingBar(){
-  const bar=document.getElementById('pendingBar');
-  const text=document.getElementById('pendingText');
-  if(hasPendingTaps()){
-    let total=tapQueue['0.25L']+tapQueue['0.5L']+tapQueue['1L'];
-    text.textContent=total+' tap'+(total>1?'s':'')+' saving…';
-    bar.classList.add('active');
-  }else{
-    bar.classList.remove('active');
-  }
-}
-
-// Warn before page close/refresh if data is pending
-window.addEventListener('beforeunload',function(e){
-  if(hasPendingTaps()||isFlushing){
-    // Try to save via sendBeacon (fire-and-forget, works on page close)
-    emergencyFlush();
-    e.preventDefault();
-    e.returnValue='You have unsaved sales data!';
-    return e.returnValue;
-  }
-});
-
-// Flush immediately when user switches tabs or minimizes
-document.addEventListener('visibilitychange',function(){
-  if(document.visibilityState==='hidden'&&hasPendingTaps()){
-    clearTimeout(tapTimer);
-    flushTaps();
-  }
-});
-
-// Last-resort save using sendBeacon (works even during page close)
-function emergencyFlush(){
-  if(!hasPendingTaps()||!scriptUrl) return;
-  const taps={},prices={};
-  for(const item of ['0.25L','0.5L','1L']){
-    if(tapQueue[item]>0){taps[item]=tapQueue[item];prices[item]=tapPrices[item]}
-  }
-  const date=document.getElementById('salesDate').value;
-  const payload=JSON.stringify({action:'sale_batch',date,taps,prices,period:getCurrentPeriod(),time:getCurrentTime()});
-  // sendBeacon is designed for page-exit data delivery
-  try{navigator.sendBeacon(scriptUrl,payload)}catch(e){}
-  tapQueue={'0.25L':0,'0.5L':0,'1L':0};
-  updatePendingBar();
-} // 1.2s of no tapping → flush to sheet
-
-function tapSale(item){
-  const date=document.getElementById('salesDate').value;
-  if(!date){showToast('Select date','error');return}
-  if(!scriptUrl){showToast('Set up connection first','error');return}
-
-  // Resolve price now
-  const ovId=item==='0.25L'?'priceOverride_q':item==='0.5L'?'priceOverride_h':'priceOverride_f';
-  const ov=parseFloat(document.getElementById(ovId).value);
-  let price=0;
-  if(ov>0)price=ov;else if(item==='0.25L')price=cfg.sellQ;else if(item==='0.5L')price=cfg.sellH;else price=cfg.sellF;
-
-  // Queue it
-  tapQueue[item]++;
-  tapPrices[item]=price;
-  updatePendingBar();
-
-  // Optimistic UI — increment by litres
-  const period=getCurrentPeriod(),time=getCurrentTime();
-  const pfx=item==='0.25L'?'q':item==='0.5L'?'h':'f';
-  const litreVal=item==='0.25L'?0.25:item==='0.5L'?0.5:1;
-  const tEl=document.getElementById(pfx+'Total'),pEl=document.getElementById(pfx+(period==='Morning'?'AM':'PM'));
-  tEl.textContent=fmtL(parseFloat(tEl.textContent)+litreVal);
-  const oldP=parseFloat(pEl.textContent)||0;
-  pEl.textContent=fmtL(oldP+litreVal)+' L';
-  document.getElementById(pfx+'Last').textContent='Last: '+time;
-  recalcLitres();
-
-  // Reset debounce timer — flush after pause
-  clearTimeout(tapTimer);
-  tapTimer=setTimeout(flushTaps,TAP_DELAY);
-}
-
-async function flushTaps(){
-  if(isFlushing)return;
-  const taps={};
-  const prices={};
-  let hasAny=false;
-  for(const item of ['0.25L','0.5L','1L']){
-    if(tapQueue[item]>0){
-      taps[item]=tapQueue[item];
-      prices[item]=tapPrices[item];
-      hasAny=true;
-    }
-  }
-  if(!hasAny)return;
-
-  // Clear queue
-  tapQueue={'0.25L':0,'0.5L':0,'1L':0};
-  updatePendingBar();
-
-  const date=document.getElementById('salesDate').value;
-  const period=getCurrentPeriod(),time=getCurrentTime();
-
-  isFlushing=true;
-  try{
-    const res=await fetch(scriptUrl,{method:'POST',body:JSON.stringify({action:'sale_batch',date,taps,prices,period,time}),headers:{'Content-Type':'text/plain'},redirect:'follow'});
-    const j=await res.json();
-    if(j.status==='success'&&j.counts) syncCounts(j.counts);
-  }catch(e){console.warn('Batch error:',e)}
-  isFlushing=false;
-
-  // If more taps arrived while we were sending, schedule another flush
-  if(tapQueue['0.25L']>0||tapQueue['0.5L']>0||tapQueue['1L']>0){
-    tapTimer=setTimeout(flushTaps,TAP_DELAY);
-  }
-}
-
-async function undoSale(item){
-  if(!scriptUrl){showToast('Set up connection','error');return}
-  // Flush any pending taps first so undo works on the latest state
-  clearTimeout(tapTimer);
-  await flushTaps();
-
-  const pfx=item==='0.25L'?'q':item==='0.5L'?'h':'f';
-  if(parseFloat(document.getElementById(pfx+'Total').textContent)<=0){showToast('Nothing to undo','error');return}
-
-  // Disable all undo buttons immediately to prevent rapid clicks
-  document.getElementById('undoQ').disabled=true;
-  document.getElementById('undoH').disabled=true;
-  document.getElementById('undoF').disabled=true;
-
-  const date=document.getElementById('salesDate').value;
-  setLoading(true);
-  try{
-    const res=await fetch(scriptUrl,{method:'POST',body:JSON.stringify({action:'sale_undo',date,item}),headers:{'Content-Type':'text/plain'},redirect:'follow'});
-    const j=await res.json();
-    if(j.status==='success'&&j.counts){syncCounts(j.counts);showToast('↩ Undone','info')}
-    else showToast(j.message||'Failed','error');
-  }catch(e){showToast('Failed','error');updateUndoButtons()}
-  setLoading(false);
-}
-
-function syncCounts(c){
-  // Don't overwrite optimistic UI if more taps are pending — next flush will sync
-  if(tapQueue['0.25L']>0||tapQueue['0.5L']>0||tapQueue['1L']>0) return;
-  setSalesUI({qm:c.q_morning,qe:c.q_evening,hm:c.h_morning,he:c.h_evening,fm:c.f_morning,fe:c.f_evening,lq:c.last_q||'',lh:c.last_h||'',lf:c.last_f||''});
-}
-
-function recalcLitres(){
-  const qL=parseFloat(document.getElementById('qTotal').textContent)||0;
-  const hL=parseFloat(document.getElementById('hTotal').textContent)||0;
-  const fL=parseFloat(document.getElementById('fTotal').textContent)||0;
-  document.getElementById('totalLitresSold').textContent=fmtL(qL+hL+fL);
-  updateUndoButtons();
-}
-
-// ══════════════════════════════
-//  SAVE FUNCTIONS
-// ══════════════════════════════
 async function savePurchases(){
-  const date=document.getElementById('purchaseDate').value;if(!date){showToast('Select date','error');return}
+  const date=$('purchaseDate').value;if(!date){showToast('Select date','error');return}
   const rows=[];
   suppliers.forEach(n=>{
     const ml=pv(n,'morn_l'),mp=pv(n,'morn_p')||cfg.buyPrice,el=pv(n,'eve_l'),ep=pv(n,'eve_p')||cfg.buyPrice;
     if(ml>0||el>0)rows.push([date,n,ml,mp,el,ep,ml+el,Math.round((ml*mp)+(el*ep))]);
   });
   if(!rows.length){showToast('No entries','error');return}
-  const btn=document.getElementById('btnSavePurchases');btn.disabled=true;btn.innerHTML='Saving…';
+  const btn=$('btnSavePurchases');btn.disabled=true;btn.textContent='Saving…';
   const ok=await sendToSheet({action:'purchases',date,rows});
-  btn.disabled=false;btn.innerHTML='Save Purchases';
+  btn.disabled=false;btn.textContent='Save Purchases';
   if(ok){showToast(`✓ ${rows.length} saved`,'success');await loadPurchaseData()}
 }
 
+// ═══════════════ SALES: QUEUE / BATCH / RETRY ═══════════════
+let tapQueue={'0.25L':0,'0.5L':0,'1L':0};
+let tapPrices={'0.25L':0,'0.5L':0,'1L':0};
+let tapTimer=null;
+let flightPromise=null;   // the in-flight flush, awaitable
+let failCount=0;
+const TAP_DELAY=1200;
+const MAX_BACKOFF=15000;
+
+function hasPendingTaps(){return ITEMS.some(i=>tapQueue[i]>0)}
+function backupPending(){
+  // Persist queue to localStorage so a crash/refresh can recover it
+  if(hasPendingTaps()){
+    localStorage.setItem(LS.pendingBackup,JSON.stringify({
+      date:$('salesDate').value,taps:tapQueue,prices:tapPrices,
+      period:getCurrentPeriod(),time:getCurrentTime(),batchId:uid()
+    }));
+  }else{
+    localStorage.removeItem(LS.pendingBackup);
+  }
+}
+function restorePendingBackup(){
+  const b=safeParse(localStorage.getItem(LS.pendingBackup));
+  if(b&&b.taps&&scriptUrl){
+    localStorage.removeItem(LS.pendingBackup);
+    // Fire-and-forget recovery send; batchId makes it safe to retry
+    apiPost({action:'sale_batch',date:b.date,taps:b.taps,prices:b.prices,period:b.period,time:b.time,batchId:b.batchId})
+      .then(()=>{showToast('✓ Recovered unsaved taps','success');loadSalesData()})
+      .catch(()=>{});
+  }
+}
+
+function updatePendingBar(state){
+  const bar=$('pendingBar'),text=$('pendingText');
+  if(state==='error'){
+    const total=ITEMS.reduce((s,i)=>s+tapQueue[i],0);
+    text.textContent='⚠ '+total+' tap'+(total>1?'s':'')+' failed — retrying…';
+    bar.className='pending-bar error';
+  }else if(hasPendingTaps()||flightPromise){
+    const total=ITEMS.reduce((s,i)=>s+tapQueue[i],0);
+    text.textContent=(total>0?total+' tap'+(total>1?'s':'')+' ':'')+'saving…';
+    bar.className='pending-bar saving';
+  }else{
+    bar.className='pending-bar';
+  }
+}
+
+function tapSale(item,btnEl){
+  const date=$('salesDate').value;
+  if(!date){showToast('Select date','error');return}
+  if(!scriptUrl){showToast('Set up connection first','error');return}
+
+  const meta=ITEM_META[item];
+  const ov=num($(meta.ovInput).value);
+  tapQueue[item]++;
+  tapPrices[item]=ov>0?ov:(item==='0.25L'?cfg.sellQ:item==='0.5L'?cfg.sellH:cfg.sellF);
+  backupPending();
+  updatePendingBar();
+  vibrate(25);
+
+  // Floating +N feedback
+  if(btnEl){
+    const f=document.createElement('div');
+    f.className='tap-float';f.textContent='+'+fmtL(meta.litres)+'L';
+    f.style.color=getComputedStyle(btnEl).borderColor;
+    btnEl.appendChild(f);
+    setTimeout(()=>f.remove(),700);
+  }
+
+  // Optimistic UI
+  const period=getCurrentPeriod(),time=getCurrentTime();
+  const tEl=$(meta.pfx+'Total'),pEl=$(meta.pfx+(period==='Morning'?'AM':'PM'));
+  tEl.textContent=fmtL(num(tEl.textContent)+meta.litres);
+  tEl.classList.add('bump');setTimeout(()=>tEl.classList.remove('bump'),150);
+  pEl.textContent=fmtL(num(pEl.textContent)+meta.litres)+' L';
+  $(meta.pfx+'Last').textContent='Last: '+time;
+  recalcLitres();
+
+  clearTimeout(tapTimer);
+  tapTimer=setTimeout(flushTaps,TAP_DELAY);
+}
+
+async function flushTaps(){
+  if(flightPromise)return flightPromise; // already sending — callers can await it
+  if(!hasPendingTaps())return;
+
+  // Snapshot & clear queue
+  const batch={
+    date:$('salesDate').value,
+    taps:{...tapQueue},prices:{...tapPrices},
+    period:getCurrentPeriod(),time:getCurrentTime(),
+    batchId:uid()
+  };
+  for(const i of ITEMS){if(batch.taps[i]===0)delete batch.taps[i]}
+  tapQueue={'0.25L':0,'0.5L':0,'1L':0};
+  backupPending();
+  updatePendingBar();
+
+  flightPromise=(async()=>{
+    try{
+      const j=await apiPost({action:'sale_batch',...batch},{keepalive:true});
+      if(j.status==='success'&&j.counts){failCount=0;syncCounts(j.counts)}
+      else throw new Error(j.message||'Server error');
+    }catch(e){
+      console.warn('Batch failed:',e);
+      // Re-queue the failed taps (batchId means a retry can't double-write)
+      for(const item in batch.taps){tapQueue[item]+=batch.taps[item];tapPrices[item]=batch.prices[item]}
+      backupPending();
+      failCount++;
+      updatePendingBar('error');
+      tapTimer=setTimeout(flushTaps,Math.min(MAX_BACKOFF,2000*failCount));
+    }finally{
+      flightPromise=null;
+      updatePendingBar();
+      // If new taps arrived mid-flight, schedule their flush
+      if(hasPendingTaps()&&failCount===0)tapTimer=setTimeout(flushTaps,TAP_DELAY);
+    }
+  })();
+  return flightPromise;
+}
+
+async function undoSale(item){
+  if(!scriptUrl){showToast('Set up connection','error');return}
+  // Ensure everything pending is on the sheet before undoing
+  clearTimeout(tapTimer);
+  await flushTaps();
+  if(flightPromise)await flightPromise;
+
+  const meta=ITEM_META[item];
+  if(num($(meta.pfx+'Total').textContent)<=0){showToast('Nothing to undo','error');return}
+
+  ITEMS.forEach(i=>$(ITEM_META[i].undoBtn).disabled=true);
+  setLoading(true);
+  try{
+    const j=await apiPost({action:'sale_undo',date:$('salesDate').value,item});
+    if(j.status==='success'&&j.counts){syncCounts(j.counts);vibrate([20,40,20]);showToast('↩ Undone','info')}
+    else{showToast(j.message||'Failed','error');updateUndoButtons()}
+  }catch(e){showToast('Undo failed','error');updateUndoButtons()}
+  setLoading(false);
+}
+
+function syncCounts(c){
+  if(hasPendingTaps())return; // don't clobber optimistic UI mid-queue
+  setSalesUI({qm:c.q_morning,qe:c.q_evening,hm:c.h_morning,he:c.h_evening,fm:c.f_morning,fe:c.f_evening,lq:c.last_q||'',lh:c.last_h||'',lf:c.last_f||''});
+}
+
+function populateSales(rows){
+  let c={qm:0,qe:0,hm:0,he:0,fm:0,fe:0,lq:'',lh:'',lf:''};
+  rows.forEach(r=>{
+    const item=String(r.Item),period=String(r.Period),time=r.Time||'';
+    if(item==='0.25L'){period==='Morning'?c.qm++:c.qe++;c.lq=time}
+    else if(item==='0.5L'){period==='Morning'?c.hm++:c.he++;c.lh=time}
+    else if(item==='1L'){period==='Morning'?c.fm++:c.fe++;c.lf=time}
+  });
+  setSalesUI(c);
+}
+
+function setSalesUI(c){
+  const sets=[
+    {pfx:'q',m:c.qm,e:c.qe,last:c.lq,mul:0.25},
+    {pfx:'h',m:c.hm,e:c.he,last:c.lh,mul:0.5},
+    {pfx:'f',m:c.fm,e:c.fe,last:c.lf,mul:1}
+  ];
+  let totalL=0;
+  sets.forEach(s=>{
+    const L=(s.m+s.e)*s.mul;totalL+=L;
+    $(s.pfx+'Total').textContent=fmtL(L);
+    $(s.pfx+'AM').textContent=fmtL(s.m*s.mul)+' L';
+    $(s.pfx+'PM').textContent=fmtL(s.e*s.mul)+' L';
+    $(s.pfx+'Last').textContent=s.last?'Last: '+fmtTime(s.last):'—';
+  });
+  $('totalLitresSold').textContent=fmtL(totalL);
+  updateUndoButtons();
+}
+function resetSalesUI(){setSalesUI({qm:0,qe:0,hm:0,he:0,fm:0,fe:0,lq:'',lh:'',lf:''})}
+function recalcLitres(){
+  const t=num($('qTotal').textContent)+num($('hTotal').textContent)+num($('fTotal').textContent);
+  $('totalLitresSold').textContent=fmtL(t);
+  updateUndoButtons();
+}
+function updateUndoButtons(){
+  ITEMS.forEach(i=>{
+    const m=ITEM_META[i];
+    $(m.undoBtn).disabled=num($(m.pfx+'Total').textContent)<=0;
+  });
+}
+function fmtTime(t){
+  if(!t)return'—';
+  const s=String(t);
+  if(s.includes('T')||s.includes('1899')){ // legacy Date-converted values
+    const d=new Date(s);
+    if(!isNaN(d)){let h=d.getUTCHours(),m=d.getUTCMinutes();const a=h>=12?'PM':'AM';h=h%12||12;return h+':'+String(m).padStart(2,'0')+' '+a}
+  }
+  return s;
+}
+
+// ═══ Page-exit protection ═══
+window.addEventListener('beforeunload',function(e){
+  if(hasPendingTaps()||flightPromise){
+    emergencyFlush();
+    e.preventDefault();
+    e.returnValue='Sales data is still saving!';
+    return e.returnValue;
+  }
+});
+document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='hidden'&&hasPendingTaps()){
+    clearTimeout(tapTimer);
+    flushTaps(); // keepalive:true lets this finish even if tab is backgrounded
+  }
+});
+function emergencyFlush(){
+  if(!hasPendingTaps()||!scriptUrl)return;
+  const taps={},prices={};
+  for(const i of ITEMS){if(tapQueue[i]>0){taps[i]=tapQueue[i];prices[i]=tapPrices[i]}}
+  const payload=JSON.stringify({action:'sale_batch',date:$('salesDate').value,taps,prices,period:getCurrentPeriod(),time:getCurrentTime(),batchId:uid()});
+  try{navigator.sendBeacon(scriptUrl,payload)}catch(e){}
+  // Don't clear the localStorage backup — if beacon failed, next app open recovers it.
+  tapQueue={'0.25L':0,'0.5L':0,'1L':0};
+  updatePendingBar();
+}
+
+// ═══════════════ UPI / CASH / EXPENSE SAVES ═══════════════
 async function saveUpiSale(){
-  const date=document.getElementById('upiDate').value,a=parseFloat(document.getElementById('upiAmount').value)||0;
+  const date=$('upiDate').value,a=num($('upiAmount').value);
   if(a<=0){showToast('Enter amount','error');return}
-  const ok=await sendToSheet({action:'upi_sale',row:[date,document.getElementById('upiCustomer').value.trim()||'—',parseFloat(document.getElementById('upiLitres').value)||0,a,document.getElementById('upiRef').value.trim()]});
-  if(ok){showToast('✓ Saved','success');['upiCustomer','upiLitres','upiAmount','upiRef'].forEach(id=>document.getElementById(id).value='');await loadUpiData()}
+  const ok=await sendToSheet({action:'upi_sale',row:[date,$('upiCustomer').value.trim()||'—',num($('upiLitres').value),a,$('upiRef').value.trim()]});
+  if(ok){showToast('✓ Saved','success');['upiCustomer','upiLitres','upiAmount','upiRef'].forEach(id=>$(id).value='');await loadUpiData()}
 }
-
 async function saveCashSale(){
-  const date=document.getElementById('cashDate').value,a=parseFloat(document.getElementById('cashAmount').value)||0;
+  const date=$('cashDate').value,a=num($('cashAmount').value);
   if(a<=0){showToast('Enter amount','error');return}
-  const ok=await sendToSheet({action:'cash_sale',row:[date,document.getElementById('cashCustomer').value.trim()||'—',parseFloat(document.getElementById('cashLitres').value)||0,a,document.getElementById('cashNote').value.trim()]});
-  if(ok){showToast('✓ Saved','success');['cashCustomer','cashLitres','cashAmount','cashNote'].forEach(id=>document.getElementById(id).value='');await loadCashData()}
+  const ok=await sendToSheet({action:'cash_sale',row:[date,$('cashCustomer').value.trim()||'—',num($('cashLitres').value),a,$('cashNote').value.trim()]});
+  if(ok){showToast('✓ Saved','success');['cashCustomer','cashLitres','cashAmount','cashNote'].forEach(id=>$(id).value='');await loadCashData()}
 }
-
 async function saveExpense(){
-  const date=document.getElementById('expenseDate').value,a=parseFloat(document.getElementById('expenseAmount').value)||0;
+  const date=$('expenseDate').value,a=num($('expenseAmount').value);
   if(a<=0){showToast('Enter amount','error');return}
   const cat=document.querySelector('#expenseChips .chip.active')?.dataset.value||'Other';
-  const ok=await sendToSheet({action:'expense',row:[date,cat,a,parseFloat(document.getElementById('expenseQty').value)||0,document.getElementById('expenseNote').value.trim()]});
-  if(ok){showToast(`✓ ₹${a} saved`,'success');['expenseAmount','expenseQty','expenseNote'].forEach(id=>document.getElementById(id).value='');await loadExpenseData()}
+  const ok=await sendToSheet({action:'expense',row:[date,cat,a,num($('expenseQty').value),$('expenseNote').value.trim()]});
+  if(ok){showToast(`✓ ₹${a} saved`,'success');['expenseAmount','expenseQty','expenseNote'].forEach(id=>$(id).value='');await loadExpenseData()}
 }
-
 async function sendToSheet(data){
   if(!scriptUrl){showToast('Set up connection in Settings','error');return false}
   setLoading(true);
-  try{const res=await fetch(scriptUrl,{method:'POST',body:JSON.stringify(data),headers:{'Content-Type':'text/plain'},redirect:'follow'});
-    const j=await res.json();setLoading(false);if(j.status==='success')return true;showToast('Error: '+(j.message||''),'error');return false;
+  try{
+    const j=await apiPost(data);
+    setLoading(false);
+    if(j.status==='success')return true;
+    showToast('Error: '+(j.message||''),'error');return false;
   }catch(e){setLoading(false);showToast('✓ Sent (check sheet)','info');return true}
 }
-
 async function testConnection(){
-  if(!scriptUrl){showToast('Enter URL first','error');return}setLoading(true);
-  try{const res=await fetch(scriptUrl+'?action=ping',{redirect:'follow'});const j=await res.json();setLoading(false);
-    if(j.status==='ok'){showToast('✓ Connected!','success');updateConnectionStatus(true);reloadAll()}else showToast('Unexpected','error');
-  }catch(e){setLoading(false);showToast('Failed','error');updateConnectionStatus(false)}
+  if(!scriptUrl){showToast('Enter URL first','error');return}
+  setLoading(true);
+  try{
+    const j=await apiGet({action:'ping'});
+    setLoading(false);
+    if(j.status==='ok'){showToast('✓ Connected!','success');updateConnectionStatus(true);reloadAll()}
+    else showToast('Unexpected response','error');
+  }catch(e){setLoading(false);showToast('Failed — check URL','error');updateConnectionStatus(false)}
 }
 
-// ── SETTINGS ──
+// ═══════════════ HISTORY RENDERING ═══════════════
+function popHistory(rows,cId){
+  const el=$(cId);
+  if(!rows.length){el.innerHTML='<div class="history-empty">No entries</div>';return}
+  let ta=0,tl=0,html='';
+  rows.forEach(r=>{
+    const c=r.Customer||'—',l=r.Litres||0,a=r['Amount (₹)']||0,n=r['UPI Ref']||r.Note||'';
+    ta+=num(a);tl+=num(l);
+    html+=`<div class="history-card"><div class="history-left"><div class="history-name">${esc(c)}</div><div class="history-detail">${l?l+' L':''}${n?' · '+esc(n):''}</div></div><div class="history-amount" style="color:var(--success)">₹${a}</div></div>`;
+  });
+  html+=`<div style="display:flex;justify-content:space-between;padding:10px 4px 0;font-size:13px;font-weight:700"><span style="color:var(--text-secondary)">${rows.length} · ${fmtL(tl)} L</span><span style="color:var(--success)">₹${ta}</span></div>`;
+  el.innerHTML=html;
+}
+function popExpenseHistory(rows){
+  const el=$('expenseHistory');
+  if(!rows.length){el.innerHTML='<div class="history-empty">No expenses</div>';return}
+  let t=0,html='';
+  rows.forEach(r=>{
+    const c=r.Category||'—',a=r['Amount (₹)']||0,q=r.Quantity||'',n=r.Note||'';t+=num(a);
+    html+=`<div class="history-card"><div class="history-left"><div class="history-name">${esc(c)}</div><div class="history-detail">${q?'Qty: '+q:''}${n?(q?' · ':'')+esc(n):''}</div></div><div class="history-amount" style="color:var(--danger)">₹${a}</div></div>`;
+  });
+  html+=`<div style="text-align:right;padding:10px 4px 0;font-size:13px;font-weight:700;color:var(--danger)">Total: ₹${t}</div>`;
+  el.innerHTML=html;
+}
+
+// ═══════════════ SETTINGS ═══════════════
 function saveSetting(){
-  cfg.buyPrice=parseFloat(document.getElementById('defaultBuyPrice').value)||0;
-  cfg.sellQ=parseFloat(document.getElementById('sellPriceQ').value)||0;
-  cfg.sellH=parseFloat(document.getElementById('sellPriceH').value)||0;
-  cfg.sellF=parseFloat(document.getElementById('sellPriceF').value)||0;
-  cfg.cutoff=parseInt(document.getElementById('cutoffHour').value)||12;
+  cfg.buyPrice=num($('defaultBuyPrice').value);
+  cfg.sellQ=num($('sellPriceQ').value);
+  cfg.sellH=num($('sellPriceH').value);
+  cfg.sellF=num($('sellPriceF').value);
+  cfg.cutoff=parseInt($('cutoffHour').value)||12;
   localStorage.setItem(LS.buyPrice,cfg.buyPrice);localStorage.setItem(LS.sellQ,cfg.sellQ);
   localStorage.setItem(LS.sellH,cfg.sellH);localStorage.setItem(LS.sellF,cfg.sellF);
   localStorage.setItem(LS.cutoff,cfg.cutoff);
   updatePriceOverridePlaceholders();updatePeriodBadge();renderSupplierGrid();loadPurchaseData();
 }
-function saveScriptUrl(){scriptUrl=document.getElementById('scriptUrl').value.trim();localStorage.setItem(LS.scriptUrl,scriptUrl);showToast('Saved','success');updateConnectionStatus()}
+function saveScriptUrl(){
+  scriptUrl=$('scriptUrl').value.trim();
+  localStorage.setItem(LS.scriptUrl,scriptUrl);
+  showToast('Saved','success');updateConnectionStatus();
+}
 function updateConnectionStatus(c){
-  const d=document.getElementById('statusDot'),t=document.getElementById('statusText'),has=!!scriptUrl;
-  d.className='status-dot '+(has?'connected':'disconnected');t.textContent=has?'URL saved — test to verify':'Not connected';
+  const d=$('statusDot'),t=$('statusText'),has=!!scriptUrl;
+  d.className='status-dot '+(has?'connected':'disconnected');
+  t.textContent=has?'URL saved — test to verify':'Not connected';
   if(c===true){d.className='status-dot connected';t.textContent='Connected ✓'}
-  if(c===false){d.className='status-dot disconnected';t.textContent='Failed'}
+  if(c===false){d.className='status-dot disconnected';t.textContent='Connection failed'}
 }
 function toggleSaleTabs(){cfg.showSaleTabs=!cfg.showSaleTabs;localStorage.setItem(LS.showSaleTabs,cfg.showSaleTabs);applySaleTabToggle()}
 function applySaleTabToggle(){
-  document.getElementById('toggleSaleTabs').className='toggle'+(cfg.showSaleTabs?' on':'');
+  $('toggleSaleTabs').className='toggle'+(cfg.showSaleTabs?' on':'');
   document.querySelector('.nav-tab[data-tab="upi"]').classList.toggle('hidden',!cfg.showSaleTabs);
   document.querySelector('.nav-tab[data-tab="cash"]').classList.toggle('hidden',!cfg.showSaleTabs);
 }
 function selectChip(el){el.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));el.classList.add('active')}
+function renderSupplierTags(){$('supplierTags').innerHTML=suppliers.map((n,i)=>`<span class="supplier-tag">${esc(n)}<span class="remove" onclick="removeSupplier(${i})">×</span></span>`).join('')}
+function addSupplier(){
+  const input=$('newSupplierName'),n=input.value.trim();
+  if(!n)return;
+  if(suppliers.includes(n)){showToast('Already exists','error');return}
+  suppliers.push(n);localStorage.setItem(LS.suppliers,JSON.stringify(suppliers));
+  input.value='';renderSupplierGrid();renderSupplierTags();showToast('Added '+n,'success');loadPurchaseData();
+}
+function removeSupplier(i){
+  if(!confirm('Remove '+suppliers[i]+'?'))return;
+  suppliers.splice(i,1);localStorage.setItem(LS.suppliers,JSON.stringify(suppliers));
+  renderSupplierGrid();renderSupplierTags();
+}
 
-function renderSupplierTags(){document.getElementById('supplierTags').innerHTML=suppliers.map((n,i)=>`<span class="supplier-tag">${n}<span class="remove" onclick="removeSupplier(${i})">×</span></span>`).join('')}
-function addSupplier(){const input=document.getElementById('newSupplierName'),n=input.value.trim();if(!n)return;if(suppliers.includes(n)){showToast('Exists','error');return}suppliers.push(n);localStorage.setItem(LS.suppliers,JSON.stringify(suppliers));input.value='';renderSupplierGrid();renderSupplierTags();showToast('Added '+n,'success');loadPurchaseData()}
-function removeSupplier(i){if(!confirm('Remove '+suppliers[i]+'?'))return;suppliers.splice(i,1);localStorage.setItem(LS.suppliers,JSON.stringify(suppliers));renderSupplierGrid();renderSupplierTags()}
-
-function showToast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500)}
-function setLoading(on){document.getElementById('loadingBar').classList.toggle('active',on)}
+// ═══════════════ UI UTILS ═══════════════
+function showToast(msg,type='info'){
+  const t=$('toast');t.textContent=msg;t.className='toast '+type+' show';
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2500);
+}
+function setLoading(on){$('loadingBar').classList.toggle('active',on)}
 
 init();
 </script>
