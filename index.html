@@ -91,6 +91,12 @@
   .undo-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px}
   .btn-undo{padding:9px 4px;border:1.5px solid var(--border);border-radius:8px;background:var(--card);font-size:12px;font-weight:600;color:var(--text-secondary);cursor:pointer;text-align:center;transition:all 0.15s}
   .btn-undo:active{background:var(--danger-light);border-color:var(--danger);color:var(--danger)}
+  .btn-undo:disabled{opacity:0.35;cursor:not-allowed;pointer-events:none;background:var(--bg)}
+
+  .pending-bar{background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:8px;padding:6px 12px;text-align:center;font-size:12px;font-weight:600;color:#92400E;margin-bottom:8px;display:none}
+  .pending-bar.active{display:flex;align-items:center;justify-content:center;gap:6px}
+  .pending-dot{width:6px;height:6px;border-radius:50%;background:#F59E0B;animation:blink 1s ease infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 
   .total-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 0 4px;margin-top:4px}
   .total-label{font-size:14px;font-weight:600;color:var(--text-secondary)}
@@ -198,6 +204,7 @@
         <div class="price-override"><input type="number" id="priceOverride_f" step="1" inputmode="decimal" onfocus="this.select()"></div>
       </div>
     </div>
+    <div class="pending-bar" id="pendingBar"><span class="pending-dot"></span><span id="pendingText">Saving...</span></div>
     <div class="litres-bar">
       <div class="lv-amount"><span id="totalLitresSold">0</span> L</div>
       <div class="lv-label">Total Litres Sold</div>
@@ -220,9 +227,9 @@
       </div>
     </div>
     <div class="undo-row">
-      <button class="btn-undo" onclick="undoSale('0.25L')">↩ ¼L</button>
-      <button class="btn-undo" onclick="undoSale('0.5L')">↩ ½L</button>
-      <button class="btn-undo" onclick="undoSale('1L')">↩ 1L</button>
+      <button class="btn-undo" id="undoQ" disabled onclick="undoSale('0.25L')">↩ ¼L</button>
+      <button class="btn-undo" id="undoH" disabled onclick="undoSale('0.5L')">↩ ½L</button>
+      <button class="btn-undo" id="undoF" disabled onclick="undoSale('1L')">↩ 1L</button>
     </div>
   </div>
 
@@ -538,6 +545,12 @@ function setSalesUI(c){
   document.getElementById('fLast').textContent=c.lf?'Last: '+fmtTime(c.lf):'—';
   const totalL=qL+hL+fL;
   document.getElementById('totalLitresSold').textContent=fmtL(totalL);
+  updateUndoButtons();
+}
+function updateUndoButtons(){
+  document.getElementById('undoQ').disabled=(parseFloat(document.getElementById('qTotal').textContent)||0)<=0;
+  document.getElementById('undoH').disabled=(parseFloat(document.getElementById('hTotal').textContent)||0)<=0;
+  document.getElementById('undoF').disabled=(parseFloat(document.getElementById('fTotal').textContent)||0)<=0;
 }
 function fmtL(v){return v%1===0?v:v.toFixed(2)}
 // Handle Google Sheets time auto-conversion: "1899-12-30T08:31:50.000Z" → "2:01 PM"
@@ -581,7 +594,55 @@ let tapQueue={'0.25L':0,'0.5L':0,'1L':0};
 let tapPrices={'0.25L':0,'0.5L':0,'1L':0};
 let tapTimer=null;
 let isFlushing=false;
-const TAP_DELAY=1200; // 1.2s of no tapping → flush to sheet
+const TAP_DELAY=1200;
+
+function hasPendingTaps(){return tapQueue['0.25L']>0||tapQueue['0.5L']>0||tapQueue['1L']>0}
+
+function updatePendingBar(){
+  const bar=document.getElementById('pendingBar');
+  const text=document.getElementById('pendingText');
+  if(hasPendingTaps()){
+    let total=tapQueue['0.25L']+tapQueue['0.5L']+tapQueue['1L'];
+    text.textContent=total+' tap'+(total>1?'s':'')+' saving…';
+    bar.classList.add('active');
+  }else{
+    bar.classList.remove('active');
+  }
+}
+
+// Warn before page close/refresh if data is pending
+window.addEventListener('beforeunload',function(e){
+  if(hasPendingTaps()||isFlushing){
+    // Try to save via sendBeacon (fire-and-forget, works on page close)
+    emergencyFlush();
+    e.preventDefault();
+    e.returnValue='You have unsaved sales data!';
+    return e.returnValue;
+  }
+});
+
+// Flush immediately when user switches tabs or minimizes
+document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='hidden'&&hasPendingTaps()){
+    clearTimeout(tapTimer);
+    flushTaps();
+  }
+});
+
+// Last-resort save using sendBeacon (works even during page close)
+function emergencyFlush(){
+  if(!hasPendingTaps()||!scriptUrl) return;
+  const taps={},prices={};
+  for(const item of ['0.25L','0.5L','1L']){
+    if(tapQueue[item]>0){taps[item]=tapQueue[item];prices[item]=tapPrices[item]}
+  }
+  const date=document.getElementById('salesDate').value;
+  const payload=JSON.stringify({action:'sale_batch',date,taps,prices,period:getCurrentPeriod(),time:getCurrentTime()});
+  // sendBeacon is designed for page-exit data delivery
+  try{navigator.sendBeacon(scriptUrl,payload)}catch(e){}
+  tapQueue={'0.25L':0,'0.5L':0,'1L':0};
+  updatePendingBar();
+} // 1.2s of no tapping → flush to sheet
 
 function tapSale(item){
   const date=document.getElementById('salesDate').value;
@@ -597,6 +658,7 @@ function tapSale(item){
   // Queue it
   tapQueue[item]++;
   tapPrices[item]=price;
+  updatePendingBar();
 
   // Optimistic UI — increment by litres
   const period=getCurrentPeriod(),time=getCurrentTime();
@@ -630,6 +692,7 @@ async function flushTaps(){
 
   // Clear queue
   tapQueue={'0.25L':0,'0.5L':0,'1L':0};
+  updatePendingBar();
 
   const date=document.getElementById('salesDate').value;
   const period=getCurrentPeriod(),time=getCurrentTime();
@@ -656,6 +719,12 @@ async function undoSale(item){
 
   const pfx=item==='0.25L'?'q':item==='0.5L'?'h':'f';
   if(parseFloat(document.getElementById(pfx+'Total').textContent)<=0){showToast('Nothing to undo','error');return}
+
+  // Disable all undo buttons immediately to prevent rapid clicks
+  document.getElementById('undoQ').disabled=true;
+  document.getElementById('undoH').disabled=true;
+  document.getElementById('undoF').disabled=true;
+
   const date=document.getElementById('salesDate').value;
   setLoading(true);
   try{
@@ -663,7 +732,7 @@ async function undoSale(item){
     const j=await res.json();
     if(j.status==='success'&&j.counts){syncCounts(j.counts);showToast('↩ Undone','info')}
     else showToast(j.message||'Failed','error');
-  }catch(e){showToast('Failed','error')}
+  }catch(e){showToast('Failed','error');updateUndoButtons()}
   setLoading(false);
 }
 
@@ -678,6 +747,7 @@ function recalcLitres(){
   const hL=parseFloat(document.getElementById('hTotal').textContent)||0;
   const fL=parseFloat(document.getElementById('fTotal').textContent)||0;
   document.getElementById('totalLitresSold').textContent=fmtL(qL+hL+fL);
+  updateUndoButtons();
 }
 
 // ══════════════════════════════
