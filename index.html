@@ -575,22 +575,32 @@ function popExpenseHistory(rows){
 }
 
 // ══════════════════════════════
-//  SALES TAP & UNDO
+//  SALES TAP (BATCHED) & UNDO
 // ══════════════════════════════
-async function tapSale(item){
+let tapQueue={'0.25L':0,'0.5L':0,'1L':0};
+let tapPrices={'0.25L':0,'0.5L':0,'1L':0};
+let tapTimer=null;
+let isFlushing=false;
+const TAP_DELAY=1200; // 1.2s of no tapping → flush to sheet
+
+function tapSale(item){
   const date=document.getElementById('salesDate').value;
   if(!date){showToast('Select date','error');return}
   if(!scriptUrl){showToast('Set up connection first','error');return}
 
-  let price=0;
+  // Resolve price now
   const ovId=item==='0.25L'?'priceOverride_q':item==='0.5L'?'priceOverride_h':'priceOverride_f';
   const ov=parseFloat(document.getElementById(ovId).value);
+  let price=0;
   if(ov>0)price=ov;else if(item==='0.25L')price=cfg.sellQ;else if(item==='0.5L')price=cfg.sellH;else price=cfg.sellF;
 
+  // Queue it
+  tapQueue[item]++;
+  tapPrices[item]=price;
+
+  // Optimistic UI — increment by litres
   const period=getCurrentPeriod(),time=getCurrentTime();
   const pfx=item==='0.25L'?'q':item==='0.5L'?'h':'f';
-
-  // Optimistic — increment by litres
   const litreVal=item==='0.25L'?0.25:item==='0.5L'?0.5:1;
   const tEl=document.getElementById(pfx+'Total'),pEl=document.getElementById(pfx+(period==='Morning'?'AM':'PM'));
   tEl.textContent=fmtL(parseFloat(tEl.textContent)+litreVal);
@@ -599,15 +609,51 @@ async function tapSale(item){
   document.getElementById(pfx+'Last').textContent='Last: '+time;
   recalcLitres();
 
+  // Reset debounce timer — flush after pause
+  clearTimeout(tapTimer);
+  tapTimer=setTimeout(flushTaps,TAP_DELAY);
+}
+
+async function flushTaps(){
+  if(isFlushing)return;
+  const taps={};
+  const prices={};
+  let hasAny=false;
+  for(const item of ['0.25L','0.5L','1L']){
+    if(tapQueue[item]>0){
+      taps[item]=tapQueue[item];
+      prices[item]=tapPrices[item];
+      hasAny=true;
+    }
+  }
+  if(!hasAny)return;
+
+  // Clear queue
+  tapQueue={'0.25L':0,'0.5L':0,'1L':0};
+
+  const date=document.getElementById('salesDate').value;
+  const period=getCurrentPeriod(),time=getCurrentTime();
+
+  isFlushing=true;
   try{
-    const res=await fetch(scriptUrl,{method:'POST',body:JSON.stringify({action:'sale_tap',date,item,price,period,time}),headers:{'Content-Type':'text/plain'},redirect:'follow'});
+    const res=await fetch(scriptUrl,{method:'POST',body:JSON.stringify({action:'sale_batch',date,taps,prices,period,time}),headers:{'Content-Type':'text/plain'},redirect:'follow'});
     const j=await res.json();
     if(j.status==='success'&&j.counts) syncCounts(j.counts);
-  }catch(e){console.warn(e)}
+  }catch(e){console.warn('Batch error:',e)}
+  isFlushing=false;
+
+  // If more taps arrived while we were sending, schedule another flush
+  if(tapQueue['0.25L']>0||tapQueue['0.5L']>0||tapQueue['1L']>0){
+    tapTimer=setTimeout(flushTaps,TAP_DELAY);
+  }
 }
 
 async function undoSale(item){
   if(!scriptUrl){showToast('Set up connection','error');return}
+  // Flush any pending taps first so undo works on the latest state
+  clearTimeout(tapTimer);
+  await flushTaps();
+
   const pfx=item==='0.25L'?'q':item==='0.5L'?'h':'f';
   if(parseFloat(document.getElementById(pfx+'Total').textContent)<=0){showToast('Nothing to undo','error');return}
   const date=document.getElementById('salesDate').value;
@@ -621,7 +667,11 @@ async function undoSale(item){
   setLoading(false);
 }
 
-function syncCounts(c){setSalesUI({qm:c.q_morning,qe:c.q_evening,hm:c.h_morning,he:c.h_evening,fm:c.f_morning,fe:c.f_evening,lq:c.last_q||'',lh:c.last_h||'',lf:c.last_f||''})}
+function syncCounts(c){
+  // Don't overwrite optimistic UI if more taps are pending — next flush will sync
+  if(tapQueue['0.25L']>0||tapQueue['0.5L']>0||tapQueue['1L']>0) return;
+  setSalesUI({qm:c.q_morning,qe:c.q_evening,hm:c.h_morning,he:c.h_evening,fm:c.f_morning,fe:c.f_evening,lq:c.last_q||'',lh:c.last_h||'',lf:c.last_f||''});
+}
 
 function recalcLitres(){
   const qL=parseFloat(document.getElementById('qTotal').textContent)||0;
